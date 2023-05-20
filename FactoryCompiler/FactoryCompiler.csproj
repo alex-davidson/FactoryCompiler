@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <Nullable>enable</Nullable>
+    <Version>0.1.0</Version>
+    <PackageProjectUrl>https://github.com/alex-davidson/FactoryCompiler</PackageProjectUrl>
+  </PropertyGroup>
+
+  <Import Project="..\Common.props" />
+
+  <ItemGroup>
+    <PackageReference Include="McMaster.Extensions.CommandLineUtils" Version="4.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FactoryCompiler.Model\FactoryCompiler.Model.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,22 @@
+image: Visual Studio 2022
+platform: Any CPU
+configuration: Release
+
+before_build:
+  - nuget restore
+
+build:
+  parallel: true
+  project: FactoryCompiler.sln
+
+test_script:
+  - cmd: dotnet test FactoryCompiler.UnitTests\bin\%CONFIGURATION%\net6.0\FactoryCompiler.UnitTests.dll
+  - cmd: nunit3-console FactoryCompiler.UnitTests\bin\%CONFIGURATION%\net6.0\FactoryCompiler.UnitTests.dll --result=FactoryCompiler.UnitTests.net6.0.xml;format=AppVeyor
+  - ps: (New-Object 'System.Net.WebClient').UploadFile("https://ci.appveyor.com/api/testresults/xunit/$($env:APPVEYOR_JOB_ID)", (Resolve-Path .\FactoryCompiler.UnitTests.net6.0.xml))
+
+notifications:
+  # Email
+  - provider: Email
+    to:
+      - appveyor-ci@descenterace.co.uk
+      
