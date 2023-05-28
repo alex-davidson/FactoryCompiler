@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using FactoryCompiler.Jobs;
 using McMaster.Extensions.CommandLineUtils;
+using Microsoft.Msagl.Core.Layout;
 
 namespace FactoryCompiler;
 
@@ -105,6 +106,12 @@ internal class Program
             app.ShowHelp();
             return 1;
         });
+
+        LayoutAlgorithmSettings.ShowDebugCurvesEnumeration = _ => { };
+        LayoutAlgorithmSettings.ShowDebugCurves = _ => { };
+        LayoutAlgorithmSettings.ShowDatabase = (_, _) => { };
+        LayoutAlgorithmSettings.Show = _ => { };
+        LayoutAlgorithmSettings.ShowGraph = _ => { };
 
         return await app.ExecuteAsync(args);
     }
