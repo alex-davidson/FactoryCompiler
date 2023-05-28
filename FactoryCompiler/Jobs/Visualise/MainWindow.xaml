@@ -126,6 +126,8 @@
           <DataGrid.RowDetailsTemplate>
             <DataTemplate>
               <StackPanel Orientation="Vertical">
+                <TextBlock Text="Location:" />
+                <TextBlock Text="{Binding Location, FallbackValue=Unknown}" TextWrapping="Wrap" />
                 <TextBlock Text="Exception details:" />
                 <TextBlock Text="{Binding Exception}" TextWrapping="Wrap" />
               </StackPanel>

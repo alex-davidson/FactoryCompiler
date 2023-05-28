@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using FactoryCompiler.Model;
 using FactoryCompiler.Model.Diagnostics;
@@ -31,7 +32,15 @@ public class FactoryDescriptionDataSource : ISource<LoadResult<FactoryDescriptio
         }
         catch (FileNotFoundException ex)
         {
-            result.Diagnostics.Add(Diagnostic.Error("File not found.", ex));
+            result.Diagnostics.Add(Diagnostic.Error("File not found.", ex, fullPath));
+        }
+        catch (JsonException ex)
+        {
+            result.Diagnostics.Add(Diagnostic.Error("File appears corrupt.", ex, fullPath));
+        }
+        catch (Exception ex)
+        {
+            result.Diagnostics.Add(Diagnostic.Error("Unknown error occurred.", ex, fullPath));
         }
         return result;
     }
