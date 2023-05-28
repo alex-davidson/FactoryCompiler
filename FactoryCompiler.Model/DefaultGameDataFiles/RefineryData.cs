@@ -67,7 +67,7 @@ internal class RefineryData : DefaultGameDataBase, IFactoryData
         new Recipe("Residual Plastic", new Duration(6),
             Refinery,
             Item.List(
-                new Item("Heavy Oil Residue").Volume(6),
+                new Item("Polymer Resin").Volume(6),
                 new Item("Water").Volume(2)),
             Item.List(new Item("Plastic").Volume(2))),
         new Recipe("Residual Rubber", new Duration(6),
