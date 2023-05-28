@@ -21,8 +21,8 @@ public readonly struct FormattedItemVolume
         Volume = volume;
         Colour = colourScheme.For(volume);
         FontWeight = highlight ? FontWeights.Bold : FontWeights.Normal;
-        VolumeInteger = ((decimal)volume).ToString("#");
-        var fraction = decimal.Remainder((decimal)volume, 1).ToString("#.####");
+        VolumeInteger = ((decimal)volume).ToString("#", CultureInfo.CurrentCulture);
+        var fraction = decimal.Remainder((decimal)volume, 1).ToString("#.####", CultureInfo.CurrentCulture);
         var decimalSeparator = fraction.IndexOf(CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator, StringComparison.CurrentCulture);
         VolumeFraction = decimalSeparator < 0 ? "" : fraction[decimalSeparator..];
     }

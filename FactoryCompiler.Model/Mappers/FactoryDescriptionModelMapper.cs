@@ -70,7 +70,17 @@ internal struct FactoryDescriptionModelMapper
     private struct ProductionMapper
     {
         public Production MapFromDto(Dto.FactoryDescription.Production dto) =>
-            new Production(MapMaybeNullIdentifier(dto.FactoryName), dto.Recipe!, default(NumberMapper).MapFromDto(dto.Count, 1));
+            new Production(
+                MapMaybeNullIdentifier(dto.FactoryName),
+                dto.Recipe!,
+                default(NumberMapper).MapFromDto(dto.Count, 1),
+                dto.Clocks?.Select(default(ProductionClockMapper).MapFromDto).ToImmutableArray() ?? default);
+    }
+
+    private struct ProductionClockMapper
+    {
+        public ProductionClock MapFromDto(Dto.FactoryDescription.ProductionClock dto) =>
+            new ProductionClock(dto.Count, default(NumberMapper).MapFromDto(dto.Clock, 1));
     }
 
     private struct TransportMapper

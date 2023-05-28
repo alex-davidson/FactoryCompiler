@@ -131,16 +131,23 @@ public class Group
 
 public class Production
 {
-    public Production(Identifier? factoryName, Identifier recipeName, Rational count)
+    public Production(Identifier? factoryName, Identifier recipeName, Rational count, ImmutableArray<ProductionClock> clocks = default)
     {
         FactoryName = factoryName;
         RecipeName = recipeName;
         Count = count;
+        Clocks = clocks.IsDefault ? ImmutableArray<ProductionClock>.Empty : clocks;
+        var clockCount = Clocks.Sum(x => x.Count);  // If this is more than Count, behaviour is undefined.
+        var clockTotal = Clocks.Select(x => x.Count * x.Percentage).Sum();
+        // Assume 100% for factories which were not explicitly specified.
+        EffectiveCount = clockTotal + (count - clockCount);
     }
 
     public Identifier? FactoryName { get; init; }
     public Identifier RecipeName { get; init; }
     public Rational Count { get; init; }
+    public Rational EffectiveCount { get; init; }   // Based on clock speeds.
+    public ImmutableArray<ProductionClock> Clocks { get; init; }
 
     public readonly struct EquivalenceComparer : IEqualityComparer<Production>
     {
@@ -152,7 +159,9 @@ public class Production
             if (x.GetType() != y.GetType()) return false;
             return Equals(x.FactoryName, y.FactoryName) &&
                    Equals(x.RecipeName, y.RecipeName) &&
-                   Equals(x.Count, y.Count);
+                   Equals(x.Count, y.Count) &&
+                   Equals(x.EffectiveCount, y.EffectiveCount) &&
+                   x.Clocks.SetEquals(y.Clocks);
         }
 
         public int GetHashCode(Production obj)
@@ -161,5 +170,7 @@ public class Production
         }
     }
 }
+
+public record ProductionClock(int Count, Rational Percentage);
 
 public record Transport(Identifier ItemName, Identifier Network);

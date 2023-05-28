@@ -14,6 +14,6 @@ public class ProductionState
         Definition = definition;
         Recipe = recipe;
         ItemVolumes = new ItemVolumesState();
-        PerSecond = definition.Count / recipe.BaseDuration;
+        PerSecond = definition.EffectiveCount / recipe.BaseDuration;
     }
 }

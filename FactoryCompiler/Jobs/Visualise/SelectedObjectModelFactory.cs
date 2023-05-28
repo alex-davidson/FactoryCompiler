@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using FactoryCompiler.Model;
+using FactoryCompiler.Model.Mappers;
 using FactoryCompiler.Model.State;
 using Microsoft.Msagl.Drawing;
+using Rationals;
 
 namespace FactoryCompiler.Jobs.Visualise;
 
@@ -76,7 +79,7 @@ public class SelectedObjectModelFactory
             {
                 { "Group", groupState.GetPreferredName() },
                 { "In region", regionName },
-                { "Count", groupState.Definition.Repeat > 1 ? groupState.Definition.Repeat.ToString() : "" },
+                { "Count", groupState.Definition.Repeat > 1 ? groupState.Definition.Repeat.ToString(CultureInfo.CurrentCulture) : "" },
             },
         };
     }
@@ -102,7 +105,9 @@ public class SelectedObjectModelFactory
                 { "Group", groupState.GroupName?.Name },
                 { "In region", regionName },
                 { "Recipe", groupState.Production!.Recipe.RecipeName.Name },
-                { "Count", groupState.Production!.Definition.Count.ToString() },
+                { "Count", FormatRational(groupState.Production!.Definition.Count) },
+                { "Effective speed", FormatRational(groupState.Production!.Definition.EffectiveCount, "0.####%"), "Relative to a single factory at 100% clock speed." },
+                { "Clocks", string.Join(", ", groupState.Production!.Definition.Clocks.Select(x => $"{x.Count} @ {FormatRational(x.Percentage, "0.####%")}")) },
             },
         };
     }
@@ -170,5 +175,13 @@ public class SelectedObjectModelFactory
             .OrderByDescending(x => x.Volume.Sign)
             // Then alphabetical.
             .ThenBy(x => x.Item.Identifier.Name, StringComparer.OrdinalIgnoreCase);
+    }
+
+    private string FormatRational(Rational? rational, string? decimalFormatString = null)
+    {
+        // We almost never want to see fractions. Convert to decimal and format accordingly.
+        if (rational == null) return "";
+        if (decimalFormatString == null) return ((decimal)rational).ToString(CultureInfo.CurrentCulture);
+        return ((decimal)rational).ToString(decimalFormatString, CultureInfo.CurrentCulture);
     }
 }

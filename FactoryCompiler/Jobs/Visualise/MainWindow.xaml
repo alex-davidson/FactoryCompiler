@@ -51,14 +51,14 @@
               <DataGridTemplateColumn Width="100">
                 <DataGridTemplateColumn.CellTemplate>
                   <DataTemplate>
-                    <TextBlock Text="{Binding Path=Label}" Foreground="#333333" Padding="1" />
+                    <TextBlock Text="{Binding Path=Label}" ToolTip="{ Binding Path=Tooltip }" Foreground="#333333" Padding="1" />
                   </DataTemplate>
                 </DataGridTemplateColumn.CellTemplate>
               </DataGridTemplateColumn>
               <DataGridTemplateColumn>
                 <DataGridTemplateColumn.CellTemplate>
                   <DataTemplate>
-                    <TextBlock HorizontalAlignment="Stretch" Text="{Binding Path=Text}" FontWeight="Bold" Padding="1" />
+                    <TextBlock HorizontalAlignment="Stretch" Text="{Binding Path=Text}" ToolTip="{ Binding Path=Tooltip }" FontWeight="Bold" Padding="1" />
                   </DataTemplate>
                 </DataGridTemplateColumn.CellTemplate>
               </DataGridTemplateColumn>

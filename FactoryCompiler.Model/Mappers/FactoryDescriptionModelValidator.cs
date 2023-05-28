@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using FactoryCompiler.Model.Diagnostics;
+using Rationals;
 
 namespace FactoryCompiler.Model.Mappers;
 
@@ -73,6 +75,15 @@ internal class FactoryDescriptionModelValidator
             if (group.Count == null)
             {
                 Diagnostics.Add(Diagnostic.Error($"Group {name} does not specify any {nameof(group.Count)}. '1' will be assumed."));
+            }
+            var count = default(NumberMapper).MapFromDto(group.Count, 1);
+            if (group.Clocks != null)
+            {
+                var clockCount = group.Clocks.Select(x => x.Count).Sum();
+                if (clockCount > count)
+                {
+                    Diagnostics.Add(Diagnostic.Error($"Group {name} specifies clock speeds for {clockCount} factories, but only {count} exist."));
+                }
             }
             return;
         }

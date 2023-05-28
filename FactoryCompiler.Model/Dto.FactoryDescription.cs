@@ -51,6 +51,20 @@ namespace FactoryCompiler.Model
                 /// </summary>
                 [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
                 public string? Count { get; set; }
+                /// <summary>
+                /// Effective number of factories processing this recipe.
+                /// </summary>
+                [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+                public ProductionClock[]? Clocks { get; set; }
+            }
+
+            /// <summary>
+            /// A number of factories clocked at a percentage of normal speed.
+            /// </summary>
+            public class ProductionClock
+            {
+                public int Count { get; set; }
+                public string? Clock { get; set; }
             }
 
             /// <summary>
