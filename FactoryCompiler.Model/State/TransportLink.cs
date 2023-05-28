@@ -8,3 +8,5 @@ public enum TransportLinkDirection
 }
 
 public record TransportLink(Transport Definition, TransportLinkDirection Direction, Region Region, Identifier NetworkName, Item Item);
+
+public record TransportLinkAggregate(TransportLinkDirection Direction, Region Region, Identifier NetworkName);

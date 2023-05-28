@@ -1,0 +1,148 @@
+﻿<Window x:Class="FactoryCompiler.Jobs.Visualise.MainWindow"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:visualise="clr-namespace:FactoryCompiler.Jobs.Visualise"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:behaviours="clr-namespace:Wpf.Behaviours"
+  d:DataContext="{d:DesignInstance visualise:VisualiseFactoryModel, IsDesignTimeCreatable=True}"
+  mc:Ignorable="d"
+  Title="Factory Viewer" Height="960" Width="1280">
+  <Grid>
+
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="2*" />
+      <ColumnDefinition Width="5px" />
+      <ColumnDefinition Width="300px" />
+    </Grid.ColumnDefinitions>
+
+    <DockPanel Grid.Column="0" Name="graphViewerPanel" ClipToBounds="True">
+    </DockPanel>
+
+    <GridSplitter Grid.Column="1"
+                  HorizontalAlignment="Center"
+                  VerticalAlignment="Stretch"
+                  Background="Gray"
+                  ShowsPreview="true"
+                  ResizeBehavior="BasedOnAlignment"
+                  ResizeDirection="Columns"
+                  Width="5"/>
+
+    <TabControl Grid.Column="2" FontSize="14">
+      <TabItem>
+        <TabItem.Header>
+          <TextBlock>Details</TextBlock>
+        </TabItem.Header>
+        <StackPanel Orientation="Vertical" Visibility="{ Binding Path=SelectedObject.Visibility }">
+          <DataGrid IsReadOnly="True"
+                    AutoGenerateColumns="False"
+                    GridLinesVisibility="None"
+                    HorizontalAlignment="Stretch"
+                    HorizontalScrollBarVisibility="Disabled"
+                    HeadersVisibility="None"
+                    ItemsSource="{ Binding Path=SelectedObject.Description }">
+            <DataGrid.Resources>
+              <Style TargetType="DataGridCell">
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+              </Style>
+            </DataGrid.Resources>
+            <DataGrid.Columns>
+              <DataGridTemplateColumn Width="100">
+                <DataGridTemplateColumn.CellTemplate>
+                  <DataTemplate>
+                    <TextBlock Text="{Binding Path=Label}" Foreground="#333333" Padding="1" />
+                  </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+              </DataGridTemplateColumn>
+              <DataGridTemplateColumn>
+                <DataGridTemplateColumn.CellTemplate>
+                  <DataTemplate>
+                    <TextBlock HorizontalAlignment="Stretch" Text="{Binding Path=Text}" FontWeight="Bold" Padding="1" />
+                  </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+              </DataGridTemplateColumn>
+            </DataGrid.Columns>
+          </DataGrid>
+
+          <TextBlock>Items/minute:</TextBlock>
+          <DataGrid IsReadOnly="True"
+                    AutoGenerateColumns="False"
+                    GridLinesVisibility="None"
+                    HorizontalAlignment="Stretch"
+                    HeadersVisibility="None"
+                    ItemsSource="{ Binding Path=SelectedObject.SortedItemVolumes }">
+            <DataGrid.Resources>
+              <Style TargetType="DataGridCell">
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+              </Style>
+            </DataGrid.Resources>
+            <DataGrid.Columns>
+              <DataGridTemplateColumn Width="Auto">
+                <DataGridTemplateColumn.CellTemplate>
+                  <DataTemplate>
+                    <TextBlock HorizontalAlignment="Stretch" Text="{Binding Item}" Foreground="{Binding Colour}" FontWeight ="{Binding FontWeight}" Padding="1" />
+                  </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+              </DataGridTemplateColumn>
+              <DataGridTemplateColumn Width="80">
+                <DataGridTemplateColumn.CellTemplate>
+                  <DataTemplate>
+                    <TextBlock HorizontalAlignment="Right" Text="{Binding VolumeInteger}" Foreground="{Binding Colour}" FontWeight ="{Binding FontWeight}" />
+                  </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+              </DataGridTemplateColumn>
+              <DataGridTemplateColumn Width="40">
+                <DataGridTemplateColumn.CellTemplate>
+                  <DataTemplate>
+                    <TextBlock HorizontalAlignment="Left" Text="{Binding VolumeFraction}" Foreground="{Binding Colour}" FontWeight ="{Binding FontWeight}" />
+                  </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+              </DataGridTemplateColumn>
+            </DataGrid.Columns>
+          </DataGrid>
+
+        </StackPanel>
+      </TabItem>
+
+      <TabItem>
+        <TabItem.Header>
+          <StackPanel Orientation="Horizontal">
+            <TextBlock>Issues</TextBlock>
+            <TextBlock Text="{ Binding Path=Issues.CountMarker }"></TextBlock>
+          </StackPanel>
+        </TabItem.Header>
+        <DataGrid IsReadOnly="True"
+                  AutoGenerateColumns="False"
+                  GridLinesVisibility="None"
+                  HorizontalAlignment="Stretch"
+                  HorizontalScrollBarVisibility="Disabled"
+                  ItemsSource="{ Binding Path=Issues.Diagnostics }">
+          <DataGrid.Columns>
+            <DataGridTextColumn Header="" Binding="{ Binding Severity }"></DataGridTextColumn>
+            <DataGridTextColumn Header="Message" Binding="{Binding Message}"></DataGridTextColumn>
+          </DataGrid.Columns>
+          <DataGrid.RowDetailsTemplate>
+            <DataTemplate>
+              <StackPanel Orientation="Vertical">
+                <TextBlock Text="Exception details:" />
+                <TextBlock Text="{Binding Exception}" TextWrapping="Wrap" />
+              </StackPanel>
+            </DataTemplate>
+          </DataGrid.RowDetailsTemplate>
+          <DataGrid.ItemContainerStyle>
+            <Style TargetType="{x:Type DataGridRow}">
+              <Style.Triggers>
+                <DataTrigger Binding="{Binding Exception}" Value="{x:Null}">
+                  <Setter Property="DetailsVisibility" Value="Collapsed"/>
+                </DataTrigger>
+              </Style.Triggers>
+            </Style>
+          </DataGrid.ItemContainerStyle>
+        </DataGrid>
+      </TabItem>
+    </TabControl>
+
+  </Grid>
+</Window>

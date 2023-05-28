@@ -1,21 +1,41 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net6.0-windows7.0</TargetFramework>
     <OutputType>Exe</OutputType>
     <Nullable>enable</Nullable>
     <Version>0.1.0</Version>
     <PackageProjectUrl>https://github.com/alex-davidson/FactoryCompiler</PackageProjectUrl>
+    <UseWPF>true</UseWPF>
   </PropertyGroup>
 
   <Import Project="..\Common.props" />
 
   <ItemGroup>
+    <PackageReference Include="AutomaticGraphLayout.WpfGraphControl" Version="0.1.9" />
     <PackageReference Include="McMaster.Extensions.CommandLineUtils" Version="4.0.2" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\FactoryCompiler.Model\FactoryCompiler.Model.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Jobs\Visualise\PieMarker.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Jobs\Visualise\NetworkLabel.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Jobs\Visualise\ProductionLabe;.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Jobs\Visualise\GroupLabel.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Jobs\Visualise\TransportLinkLabel.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
 
 </Project>

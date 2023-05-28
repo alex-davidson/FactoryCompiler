@@ -10,20 +10,20 @@ public static class Examples
             ImmutableArray.Create(
                 new Region(
                     "Smelting",
-                    Groups: ImmutableArray.Create(
+                    groups: ImmutableArray.Create(
                         new Group("Iron",
                             new Production("Smelter", "Iron Ingot", 4)),
                         new Group("Copper",
                             new Production("Smelter", "Copper Ingot", 2))),
-                    Inbound: ImmutableArray.Create(
+                    inbound: ImmutableArray.Create(
                         new Transport("Iron Ore", "Mines"),
                         new Transport("Copper Ore", "Mines")),
-                    Outbound: ImmutableArray.Create(
+                    outbound: ImmutableArray.Create(
                         new Transport("Iron Ingot", "Ingots"),
                         new Transport("Copper Ingot", "Ingots"))),
                 new Region(
                     "Factories",
-                    Groups: ImmutableArray.Create(
+                    groups: ImmutableArray.Create(
                         new Group("Iron",
                             ImmutableArray.Create(
                                 new Group(null,
@@ -32,16 +32,16 @@ public static class Examples
                                     new Production("Constructor", "Iron Rod", 2)))),
                         new Group("Copper",
                             new Production("Constructor", "Wire", 2))),
-                    Inbound: ImmutableArray.Create(
+                    inbound: ImmutableArray.Create(
                         new Transport("Iron Ingot", "Ingots"),
                         new Transport("Copper Ingot", "Ingots")),
-                    Outbound: ImmutableArray.Create(
+                    outbound: ImmutableArray.Create(
                         new Transport("Iron Rod", "Ammo Factory")))));
 
     public static FactoryDescription PolymerLoopFactory =>
         SingleRegion(
             new Region("PolymerLoop",
-                Groups: ImmutableArray.Create(
+                groups: ImmutableArray.Create(
                     new Group(null,
                         new Production(null, "Heavy Oil Residue", 10)),
                     new Group(null,
@@ -52,13 +52,13 @@ public static class Examples
                         new Production(null, "Recycled Plastic", Rational.Approximate(14.44444, 0.0001))),
                     new Group(null,
                         new Production(null, "Recycled Rubber", Rational.Approximate(12.22222, 0.0001)))),
-                Inbound: ImmutableArray<Transport>.Empty,
-                Outbound: ImmutableArray<Transport>.Empty));
+                inbound: ImmutableArray<Transport>.Empty,
+                outbound: ImmutableArray<Transport>.Empty));
 
     public static FactoryDescription AluminumIngotFactory =>
         SingleRegion(
             new Region("AluminiumIngot",
-                Groups: ImmutableArray.Create(
+                groups: ImmutableArray.Create(
                     new Group(null,
                         new Production(null, "Heavy Oil Residue", 2)),
                     new Group(null,
@@ -69,13 +69,13 @@ public static class Examples
                         new Production(null, "Pure Aluminum Ingot", 20)),
                     new Group(null,
                         new Production(null, "Sloppy Alumina", 3))),
-                Inbound: ImmutableArray<Transport>.Empty,
-                Outbound: ImmutableArray<Transport>.Empty));
+                inbound: ImmutableArray<Transport>.Empty,
+                outbound: ImmutableArray<Transport>.Empty));
 
     public static FactoryDescription RadioControlUnitFactory =>
         SingleRegion(
             new Region("RadioControlUnit",
-                Groups: ImmutableArray.Create(
+                groups: ImmutableArray.Create(
                     new Group("Copper",
                         ImmutableArray.Create(
                             new Group(null,
@@ -118,8 +118,8 @@ public static class Examples
                         new Production(null, "Caterium Circuit Board", Rational.Approximate(6.86, 0.01))),
                     new Group(null,
                         new Production(null, "Radio Control System", 4))),
-                Inbound: ImmutableArray<Transport>.Empty,
-                Outbound: ImmutableArray<Transport>.Empty));
+                inbound: ImmutableArray<Transport>.Empty,
+                outbound: ImmutableArray<Transport>.Empty));
 
     private static FactoryDescription SingleRegion(Region region) =>
         new FactoryDescription(ImmutableArray.Create(region));

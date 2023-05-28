@@ -10,41 +10,55 @@ public class FactoryStateSummariser
     {
         var summary = new FactoryStateSummary();
         var linksByRegion = state.TransportLinks.ToLookup(x => x.Region);
-        var tradeByRegion = new Dictionary<Region, ItemVolumesState>();
+        var tradeByRegion = new Dictionary<Region, IItemVolumesState>();
 
         foreach (var region in state.Regions.OrderBy(x => x.RegionName.Name))
         {
             // Summarise the regions excess and shortfall of items which are *not* imported or exported.
             var transported = linksByRegion[region.Definition].ToDictionary(x => x.Item, x => x.Direction);
-            var withoutTransport = ItemVolumesState.Sum(region.ItemVolumes.Where(x => !IsExternalised(x)));
+            var withoutTransport = ItemVolumesState.Sum(region.ItemVolumes.Where(x => !IsExternalised(transported, x)));
 
             summary.Regions.Add(region.Definition, withoutTransport);
-            tradeByRegion.Add(region.Definition, ItemVolumesState.Sum(region.ItemVolumes.Where(IsExternalised)));
+            tradeByRegion.Add(region.Definition, ItemVolumesState.Sum(region.ItemVolumes.Where(x => IsExternalised(transported, x))));
 
-            bool IsExternalised(ItemVolume itemVolume)
-            {
-                if (!transported.TryGetValue(itemVolume.Item, out var direction)) return false;
-                // Excess is marked for export?
-                if (direction == TransportLinkDirection.FromRegion && itemVolume.Volume > 0) return true;
-                // Shortfall is marked for import?
-                if (direction == TransportLinkDirection.ToRegion && itemVolume.Volume < 0) return true;
-                return false;
-            }
+            SummariseGroups(summary, region.Groups, region.ItemVolumes, transported);
         }
 
         var linksByNetwork = state.TransportLinks.ToLookup(x => x.NetworkName);
         foreach (var network in linksByNetwork.OrderBy(x => x.Key.Name))
         {
-            var networkState = new ItemVolumesState();
-            foreach (var link in network)
+            var networkState = new List<ItemVolume>();
+            foreach (var link in network.GroupBy(x => new { x.Region, x.Direction }))
             {
-                if (!tradeByRegion.TryGetValue(link.Region, out var trade)) continue;
-                // Volumes sent to the region are already negative.
-                networkState.Produce(link.Item, trade.GetVolume(link.Item));
+                if (!tradeByRegion.TryGetValue(link.Key.Region, out var trade)) continue;
+                var linkState = ItemVolumesState.Sum(link.Select(x => trade.GetVolume(x.Item)));
+                summary.TransportLinks.Add(new TransportLinkAggregate(link.Key.Direction, link.Key.Region, network.Key), linkState);
+                networkState.AddRange(linkState);
             }
 
-            summary.Networks.Add(network.Key, networkState);
+            // Volumes sent to the region are already negative.
+            summary.Networks.Add(network.Key, ItemVolumesState.Sum(networkState));
         }
         return summary;
+    }
+
+    private static bool IsExternalised(Dictionary<Item, TransportLinkDirection> transported, ItemVolume itemVolume)
+    {
+        if (!transported.TryGetValue(itemVolume.Item, out var direction)) return false;
+        // Excess is marked for export?
+        if (direction == TransportLinkDirection.FromRegion && itemVolume.Volume > 0) return true;
+        // Shortfall is marked for import?
+        if (direction == TransportLinkDirection.ToRegion && itemVolume.Volume < 0) return true;
+        return false;
+    }
+
+    private void SummariseGroups(FactoryStateSummary summary, IReadOnlyCollection<GroupState> groups, ItemVolumesState regionItemVolumes, Dictionary<Item, TransportLinkDirection> transported)
+    {
+        foreach (var group in groups)
+        {
+            var contributions = ItemVolumesState.Sum(group.ItemVolumes.GetNetVolumes().Where(x => !IsExternalised(transported, x)));
+            summary.Groups.Add(group.Definition, new GroupSummary(regionItemVolumes, contributions));
+            SummariseGroups(summary, group.Groups, regionItemVolumes, transported);
+        }
     }
 }

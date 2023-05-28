@@ -67,6 +67,6 @@ public class FactoryStateEvaluatorTests
         Assert.That(state.Diagnostics, Is.Empty);
         new FactoryStateEvaluator().UpdateInPlace(state);
 
-        Assert.That(state.ItemVolumes, Is.EquivalentTo(expectedItemVolumes));
+        Assert.That(state.ItemVolumes.GetNetVolumes(), Is.EquivalentTo(expectedItemVolumes));
     }
 }

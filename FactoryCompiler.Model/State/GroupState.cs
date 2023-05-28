@@ -6,10 +6,12 @@ namespace FactoryCompiler.Model.State;
 public class GroupState
 {
     public Group Definition { get; }
-    public Identifier? GroupName { get; private set; }
+    public Identifier? GroupName { get; private init; }
     public ProductionState? Production { get; }
     public ImmutableArray<GroupState> Groups { get; }
     public ItemVolumesState ItemVolumes { get; set; }
+
+    public string GetPreferredName() => GroupName?.Name ?? Production?.Recipe.RecipeName.Name ?? "";
 
     private GroupState(Group definition, ProductionState? production, ImmutableArray<GroupState> groups)
     {

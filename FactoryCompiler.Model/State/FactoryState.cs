@@ -1,5 +1,6 @@
 ﻿using FactoryCompiler.Model.Diagnostics;
 using System.Collections.Immutable;
+using System.Linq;
 
 namespace FactoryCompiler.Model.State
 {
@@ -9,6 +10,8 @@ namespace FactoryCompiler.Model.State
         public ImmutableArray<TransportLink> TransportLinks { get; }
         public ImmutableArray<Diagnostic> Diagnostics { get; }
         public ItemVolumesState ItemVolumes { get; set; }
+
+        public bool HasErrors => Diagnostics.Any(x => x.Severity >= Severity.Error) == true;
 
         public FactoryState(ImmutableArray<RegionState> regions, ImmutableArray<TransportLink> transportLinks, ImmutableArray<Diagnostic> diagnostics)
         {

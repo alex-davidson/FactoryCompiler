@@ -38,7 +38,7 @@ internal class FactoryStateFormatter
         }
     }
 
-    private void Summarise(ItemVolumesState state)
+    private void Summarise(IItemVolumesState state)
     {
         var excess = state.Where(x => x.Volume > 0).ToArray();
         if (excess.Any())

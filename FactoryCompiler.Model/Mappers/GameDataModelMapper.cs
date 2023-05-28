@@ -90,7 +90,7 @@ internal struct GameDataModelMapper
 
         public ItemVolume MapFromDto(Dto.GameData.ItemVolume dto) =>
             new ItemVolume(
-                Item: default(ItemMapper).MapFromDto(dto.Item!),
-                Volume: default(NumberMapper).MapFromDto(dto.Volume, 1));
+                item: default(ItemMapper).MapFromDto(dto.Item!),
+                volume: default(NumberMapper).MapFromDto(dto.Volume, 1));
     }
 }

@@ -42,10 +42,10 @@ internal struct FactoryDescriptionModelMapper
 
         public Region MapFromDto(Dto.FactoryDescription.Region dto) =>
             new Region(
-                RegionName: dto.RegionName!,
-                Groups: MapListFrom(dto.Groups?.Select(default(GroupMapper).MapFromDto)),
-                Inbound: MapListFrom(dto.Inbound?.Select(default(TransportMapper).MapFromDto)),
-                Outbound: MapListFrom(dto.Outbound?.Select(default(TransportMapper).MapFromDto)));
+                regionName: dto.RegionName!,
+                groups: MapListFrom(dto.Groups?.Select(default(GroupMapper).MapFromDto)),
+                inbound: MapListFrom(dto.Inbound?.Select(default(TransportMapper).MapFromDto)),
+                outbound: MapListFrom(dto.Outbound?.Select(default(TransportMapper).MapFromDto)));
     }
 
     private struct GroupMapper

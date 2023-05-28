@@ -9,7 +9,7 @@ public record struct Diagnostic(Severity Severity, object? Location, string Mess
     public static Diagnostic Warning(string message, Exception? exception = null, object? location = null) =>
         new Diagnostic(Severity.Warning, location, message, exception);
     public static Diagnostic Info(string message, object? location = null) =>
-        new Diagnostic(Severity.Warning, location, message, null);
+        new Diagnostic(Severity.Info, location, message, null);
 
     public override string ToString() => $"{Severity}: {Message}";
 }

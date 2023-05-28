@@ -46,7 +46,7 @@ namespace FactoryCompiler.UnitTests
                 return;
             }
 
-            if (Equals(roundtripped, description)) return;
+            if (default(FactoryDescription.EquivalenceComparer).Equals(roundtripped, description)) return;
 
             var diff = new FactoryDescriptionDifferenceDescriber
             {

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using FactoryCompiler.Model.Diagnostics;
-using FactoryCompiler.Model.Mappers;
 
 namespace FactoryCompiler.DataSources;
 
@@ -24,4 +23,6 @@ public class LoadResult<T>
     /// List of validation failures (warnings and errors) encountered during loading.
     /// </summary>
     public IList<Diagnostic> Diagnostics { get; } = new List<Diagnostic>();
+
+    public static LoadResult<T> Empty => new LoadResult<T>(null);
 }

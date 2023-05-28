@@ -53,8 +53,9 @@ public class ItemVolumesStateTests
         Assert.That(ItemVolumesState.Sum(new [] { sut1, sut2 }),
             Is.EquivalentTo(new[]
             {
-                new ItemVolume(new Item("Item2"), 10),
-                new ItemVolume(new Item("Item3"), -10),
+                new ItemVolume(new Item("Item1"), 50, 50),
+                new ItemVolume(new Item("Item2"), 30, 20),
+                new ItemVolume(new Item("Item3"), 20, 30),
             }));
     }
 }

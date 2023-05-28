@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics;
+using FactoryCompiler.Model.State;
 using Rationals;
 
 /// <summary>
@@ -31,7 +34,52 @@ public record Item(Identifier Identifier)
     public static ImmutableArray<Item> List(params Item[] identifiers) => ImmutableArray.CreateRange(identifiers);
     public static ImmutableArray<ItemVolume> List(params ItemVolume[] identifiers) => ImmutableArray.CreateRange(identifiers);
 }
-public record ItemVolume(Item Item, Rational Volume);
+
+public readonly struct ItemVolume
+{
+    public ItemVolume(Item item, Rational volume)
+    {
+        Item = item;
+        Produced = volume > 0 ? volume : 0;
+        Consumed = volume < 0 ? -volume : 0;
+        Debug.Assert(Produced >= 0);
+        Debug.Assert(Consumed >= 0);
+    }
+
+    public ItemVolume(Item item, Rational produced, Rational consumed)
+    {
+        Item = item;
+        Produced = produced;
+        Consumed = consumed;
+        Debug.Assert(Produced >= 0);
+        Debug.Assert(Consumed >= 0);
+    }
+
+    /// <summary>
+    /// Net volume.
+    /// </summary>
+    public Rational Volume => Produced - Consumed;
+    /// <summary>
+    /// Total volume turnover.
+    /// </summary>
+    public Rational Turnover => Produced + Consumed;
+    public Item Item { get; }
+    public Rational Produced { get; }
+    public Rational Consumed { get; }
+
+    public static ItemVolume operator +(ItemVolume a, ItemVolume b)
+    {
+        if (a.Equals(default(ItemVolume))) return b;
+        if (b.Equals(default(ItemVolume))) return a;
+        if (a.Item != b.Item) throw new ArgumentException();
+        if (a.Turnover == 0) return b;
+        if (b.Turnover == 0) return a;
+        return new ItemVolume(a.Item, a.Produced + b.Produced, a.Consumed + b.Consumed);
+    }
+
+    public override string ToString() => $"{Item}: +{Produced},  -{Consumed}";
+}
+
 public record Factory(Identifier FactoryName);
 
 [Flags]

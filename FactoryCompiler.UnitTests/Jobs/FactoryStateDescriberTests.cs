@@ -15,24 +15,24 @@ public class FactoryStateDescriberTests
         TestFactory(Examples.SimpleFactory, @"
 Region: Factories
   Excess:
-              Iron Plate:         60
-                    Wire:         60
+                  Iron Plate:         60
+                        Wire:         60
 
 Region: Smelting
   (balanced)
 
 Network: Ammo Factory
   Excess:
-                Iron Rod:         30
+                    Iron Rod:         30
 
 Network: Ingots
   Excess:
-            Copper Ingot:         30
+                Copper Ingot:         30
 
 Network: Mines
   Shortfall:
-                Iron Ore:       -120
-              Copper Ore:        -60
+                    Iron Ore:       -120
+                  Copper Ore:        -60
 
 ".TrimStart());
     }

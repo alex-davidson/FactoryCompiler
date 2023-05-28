@@ -1,0 +1,1 @@
+AutomaticGraphLayout/MSAGL: These are all custom builds because the latest public packages are out of date or lack the WPF control.

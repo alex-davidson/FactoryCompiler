@@ -1,55 +1,55 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using Rationals;
 
 namespace FactoryCompiler.Model;
 
-public record FactoryDescription(ImmutableArray<Region> Regions)
+public class FactoryDescription
 {
-    public virtual bool Equals(FactoryDescription? other)
+    public FactoryDescription(ImmutableArray<Region> regions)
     {
-        if (ReferenceEquals(null, other)) return false;
-        if (ReferenceEquals(this, other)) return true;
-        return Regions.SetEquals(other.Regions);
+        Regions = regions;
     }
 
-    public override int GetHashCode()
-    {
-        unchecked
-        {
-            var hashCode = Regions.FirstOrDefault()?.GetHashCode() ?? 0;
-            hashCode = (hashCode * 397) + Regions.Length.GetHashCode();
-            return hashCode;
-        }
-    }
+    public ImmutableArray<Region> Regions { get; init; }
 
     public static FactoryDescription Merge(IEnumerable<FactoryDescription> factories) =>
         new FactoryDescription(Region.MergeByName(factories.SelectMany(x => x.Regions)));
-}
-public record Region(Identifier RegionName, ImmutableArray<Group> Groups, ImmutableArray<Transport> Inbound, ImmutableArray<Transport> Outbound)
-{
-    public virtual bool Equals(Region? other)
-    {
-        if (ReferenceEquals(null, other)) return false;
-        if (ReferenceEquals(this, other)) return true;
-        return RegionName.Equals(other.RegionName) &&
-               Groups.SetEquals(other.Groups) &&
-               Inbound.SetEquals(other.Inbound) &&
-               Outbound.SetEquals(other.Outbound);
-    }
 
-    public override int GetHashCode()
+    public readonly struct EquivalenceComparer : IEqualityComparer<FactoryDescription>
     {
-        unchecked
+        public bool Equals(FactoryDescription? x, FactoryDescription? y)
         {
-            var hashCode = RegionName.GetHashCode();
-            hashCode = (hashCode * 397) + Groups.Length.GetHashCode();
-            hashCode = (hashCode * 397) + Inbound.Length.GetHashCode();
-            hashCode = (hashCode * 397) + Outbound.Length.GetHashCode();
-            return hashCode;
+            if (ReferenceEquals(x, y)) return true;
+            if (ReferenceEquals(x, null)) return false;
+            if (ReferenceEquals(y, null)) return false;
+            if (x.GetType() != y.GetType()) return false;
+            return x.Regions.SetEquals(y.Regions, default(Region.EquivalenceComparer));
+        }
+
+        public int GetHashCode(FactoryDescription obj)
+        {
+            return HashCode.Combine(obj.Regions.FirstOrDefault(), obj.Regions.Length);
         }
     }
+}
+
+public class Region
+{
+    public Region(Identifier regionName, ImmutableArray<Group> groups, ImmutableArray<Transport> inbound, ImmutableArray<Transport> outbound)
+    {
+        RegionName = regionName;
+        Groups = groups;
+        Inbound = inbound;
+        Outbound = outbound;
+    }
+
+    public Identifier RegionName { get; init; }
+    public ImmutableArray<Group> Groups { get; init; }
+    public ImmutableArray<Transport> Inbound { get; init; }
+    public ImmutableArray<Transport> Outbound { get; init; }
 
     public static ImmutableArray<Region> MergeByName(IEnumerable<Region> regions)
     {
@@ -61,8 +61,29 @@ public record Region(Identifier RegionName, ImmutableArray<Group> Groups, Immuta
                 xs.SelectMany(x => x.Outbound).Distinct().ToImmutableArray()))
             .ToImmutableArray();
     }
+
+    public readonly struct EquivalenceComparer : IEqualityComparer<Region>
+    {
+        public bool Equals(Region? x, Region? y)
+        {
+            if (ReferenceEquals(x, y)) return true;
+            if (ReferenceEquals(x, null)) return false;
+            if (ReferenceEquals(y, null)) return false;
+            if (x.GetType() != y.GetType()) return false;
+            return x.RegionName.Equals(y.RegionName) &&
+                   x.Groups.SetEquals(y.Groups, default(Group.EquivalenceComparer)) &&
+                   x.Inbound.SetEquals(y.Inbound) &&
+                   x.Outbound.SetEquals(y.Outbound);
+        }
+
+        public int GetHashCode(Region obj)
+        {
+            return HashCode.Combine(obj.RegionName, obj.Groups.Length, obj.Inbound.Length, obj.Outbound.Length);
+        }
+    }
 }
-public record Group
+
+public class Group
 {
     public Group(Identifier? groupName, Production? production, int repeat = 1)
     {
@@ -84,32 +105,61 @@ public record Group
     public ImmutableArray<Group> Groups { get; }
     public int Repeat { get; }
 
-    public void Deconstruct(out Identifier? groupName, out Production? production, out ImmutableArray<Group> groups)
+    public readonly struct EquivalenceComparer : IEqualityComparer<Group>
     {
-        groupName = GroupName;
-        production = Production;
-        groups = Groups;
-    }
-
-    public virtual bool Equals(Group? other)
-    {
-        if (ReferenceEquals(null, other)) return false;
-        if (ReferenceEquals(this, other)) return true;
-        return GroupName.Equals(other.GroupName) &&
-               Equals(Production, other.Production) &&
-               Groups.SetEquals(other.Groups);
-    }
-
-    public override int GetHashCode()
-    {
-        unchecked
+        public bool Equals(Group? x, Group? y)
         {
-            var hashCode = GroupName?.GetHashCode() ?? 0;
-            hashCode = (hashCode * 397) + (Production?.GetHashCode() ?? 0);
-            hashCode = (hashCode * 397) + Groups.Length.GetHashCode();
-            return hashCode;
+            if (ReferenceEquals(x, y)) return true;
+            if (ReferenceEquals(x, null)) return false;
+            if (ReferenceEquals(y, null)) return false;
+            if (x.GetType() != y.GetType()) return false;
+            var areChildrenEquiv = x.Groups.SetEquals(y.Groups, default(EquivalenceComparer));
+
+            return x.GroupName.Equals(y.GroupName) &&
+                   default(Production.EquivalenceComparer).Equals(x.Production, y.Production) &&
+                   areChildrenEquiv;
+        }
+
+        public int GetHashCode(Group obj)
+        {
+            return HashCode.Combine(obj.GroupName,
+                obj.Production == null ? 0 : default(Production.EquivalenceComparer).GetHashCode(obj.Production),
+                obj.Groups.Length);
         }
     }
 }
-public record Production(Identifier? FactoryName, Identifier RecipeName, Rational Count);
+
+public class Production
+{
+    public Production(Identifier? factoryName, Identifier recipeName, Rational count)
+    {
+        FactoryName = factoryName;
+        RecipeName = recipeName;
+        Count = count;
+    }
+
+    public Identifier? FactoryName { get; init; }
+    public Identifier RecipeName { get; init; }
+    public Rational Count { get; init; }
+
+    public readonly struct EquivalenceComparer : IEqualityComparer<Production>
+    {
+        public bool Equals(Production? x, Production? y)
+        {
+            if (ReferenceEquals(x, y)) return true;
+            if (ReferenceEquals(x, null)) return false;
+            if (ReferenceEquals(y, null)) return false;
+            if (x.GetType() != y.GetType()) return false;
+            return Equals(x.FactoryName, y.FactoryName) &&
+                   Equals(x.RecipeName, y.RecipeName) &&
+                   Equals(x.Count, y.Count);
+        }
+
+        public int GetHashCode(Production obj)
+        {
+            return HashCode.Combine(obj.FactoryName, obj.RecipeName);
+        }
+    }
+}
+
 public record Transport(Identifier ItemName, Identifier Network);

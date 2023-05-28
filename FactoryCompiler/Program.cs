@@ -42,6 +42,28 @@ internal class Program
             });
         });
 
+        app.Command("visualise", c =>
+        {
+            c.Description = "Show an interactive visualisation of the factory.";
+
+            var dbOption = c.Option("--db <db.json>", "JSON file containing recipes, etc from the game. The internal file will be used if not specified.", CommandOptionType.SingleValue);
+            var requestOption = c.Argument("<factory.json> ...", "One or more JSON files describing the factory.", true);
+            var ignoreErrorsOption = c.Option<bool>("--ignore-errors", "Try to continue when an error occurs.", CommandOptionType.NoValue);
+
+            c.OnExecuteAsync(async token => {
+                var job = new VisualiseJob
+                {
+                    DatabaseFilePath = dbOption.Value(),
+                    IgnoreErrors = ignoreErrorsOption.ParsedValue,
+                };
+                foreach (var path in requestOption.Values)
+                {
+                    if (!string.IsNullOrEmpty(path)) job.FactoryDescriptionFilePaths.Add(path);
+                }
+                return await job.Run(token);
+            });
+        });
+
         app.Command("export-db", c =>
         {
             c.Description = "Write out the application's internal database of recipes, etc as JSON. This is the default database used by other commands if --db is not specified.";

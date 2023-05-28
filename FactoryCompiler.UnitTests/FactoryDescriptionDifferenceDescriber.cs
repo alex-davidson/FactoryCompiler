@@ -20,7 +20,7 @@ internal class FactoryDescriptionDifferenceDescriber
 
     public void Describe(FactoryDescription left, FactoryDescription right, TextWriter differences)
     {
-        foreach (var item in Join(left.Regions, right.Regions, x => x.RegionName))
+        foreach (var item in Join(left.Regions, right.Regions, x => x.RegionName, default(Region.EquivalenceComparer)))
         {
             if (item.Left.SetEquals(item.Right)) continue;
             differences.WriteLine($"Region {item.Key} differs.");
@@ -37,7 +37,7 @@ internal class FactoryDescriptionDifferenceDescriber
 
     public void Describe(Region left, Region right, TextWriter differences)
     {
-        if (!left.Groups.SetEquals(right.Groups))
+        if (!left.Groups.SetEquals(right.Groups, default(Group.EquivalenceComparer)))
         {
             differences.WriteLine("* Groups differ.");
         }
