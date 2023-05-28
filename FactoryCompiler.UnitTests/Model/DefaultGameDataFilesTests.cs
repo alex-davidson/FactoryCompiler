@@ -14,6 +14,12 @@ public class DefaultGameDataFilesTests
     [Datapoints]
     public static IFactoryData[] FactoryDataCases { get; } =
     {
+        new MinerMk1Data(),
+        new MinerMk2Data(),
+        new MinerMk3Data(),
+        new WaterExtractorData(),
+        new OilExtractorData(),
+
         new SmelterData(),
         new FoundryData(),
 

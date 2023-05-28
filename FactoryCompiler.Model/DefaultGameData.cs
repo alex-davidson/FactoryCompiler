@@ -8,6 +8,12 @@ internal class DefaultGameData : DefaultGameDataBase
 {
     private static readonly IFactoryData[] factoryData =
     {
+        new MinerMk1Data(),
+        new MinerMk2Data(),
+        new MinerMk3Data(),
+        new WaterExtractorData(),
+        new OilExtractorData(),
+
         new SmelterData(),
         new FoundryData(),
 
