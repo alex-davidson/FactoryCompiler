@@ -1,6 +1,8 @@
 ﻿using FactoryCompiler.Model.State;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
+using FactoryCompiler.Model.Algorithms;
 
 namespace FactoryCompiler.Model.Evaluate;
 
@@ -15,7 +17,10 @@ public class FactoryStateSummariser
         foreach (var region in state.Regions.OrderBy(x => x.RegionName.Name))
         {
             // Summarise the regions excess and shortfall of items which are *not* imported or exported.
-            var transported = linksByRegion[region.Definition].ToDictionary(x => x.Item, x => x.Direction);
+            var transported = linksByRegion[region.Definition]
+                .Select(x => new { x.Item, x.Direction })
+                .Distinct()
+                .ToDictionary(x => x.Item, x => x.Direction);
             var withoutTransport = ItemVolumesState.Sum(region.ItemVolumes.Where(x => !IsExternalised(transported, x)));
 
             summary.Regions.Add(region.Definition, withoutTransport);
@@ -24,20 +29,24 @@ public class FactoryStateSummariser
             SummariseGroups(summary, region.Groups, region.ItemVolumes, transported);
         }
 
-        var linksByNetwork = state.TransportLinks.ToLookup(x => x.NetworkName);
-        foreach (var network in linksByNetwork.OrderBy(x => x.Key.Name))
-        {
-            var networkState = new List<ItemVolume>();
-            foreach (var link in network.GroupBy(x => new { x.Region, x.Direction }))
-            {
-                if (!tradeByRegion.TryGetValue(link.Key.Region, out var trade)) continue;
-                var linkState = ItemVolumesState.Sum(link.Select(x => trade.GetVolume(x.Item)));
-                summary.TransportLinks.Add(new TransportLinkAggregate(link.Key.Direction, link.Key.Region, network.Key), linkState);
-                networkState.AddRange(linkState);
-            }
+        // Cannot process networks independently, as many-to-many relationships may exist between networks and regions.
+        // Must process per-item-type and work with subgraphs of regions and networks.
+        // We mostly assume that regions can never export what they import, so each subgraph should be representable
+        // in three layers: exporting regions, networks, importing regions. However the user can specify IgnoreErrors,
+        // in which case we could be dealing with just about anything here.
+        var analyser = new TransportGraphAnalyser();
+        var distribution = state.TransportLinks
+            .GroupBy(x => x.Item)
+            .SelectMany(s => analyser.SolveDistribution(s.ToList(), s.Key, tradeByRegion))
+            .ToArray();
 
-            // Volumes sent to the region are already negative.
-            summary.Networks.Add(network.Key, ItemVolumesState.Sum(networkState));
+        foreach (var linkAggregate in distribution.GroupBy(x => new TransportLinkAggregate(x.Link.Direction, x.Link.Region, x.Link.NetworkName), x => x.ItemVolume))
+        {
+            summary.TransportLinks.Add(linkAggregate.Key, ItemVolumesState.Sum(linkAggregate));
+        }
+        foreach (var networkAggregate in distribution.GroupBy(x => x.Link.NetworkName, x => x.ItemVolume))
+        {
+            summary.Networks.Add(networkAggregate.Key, ItemVolumesState.Sum(networkAggregate));
         }
         return summary;
     }

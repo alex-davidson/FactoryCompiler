@@ -37,9 +37,12 @@ consumption of resources.
   across all connected Regions.
   * Again, this only considers actual imports/exports. A Region with eg. a negative volume of
     an export is not considered here.
+  * Since multiple networks may service multiple regions (many to many) determining net excess/
+    shortfall can be rather complicated. We use an implementation of Two-Phase Simplex for this,
+    because I just happened to have one lying around.
 
-* A Group summary considers the Group's contribution to its parent Group/Region's totals,
-  taking into account *turnover*.
+* A Group summary considers the Group's contribution to its parent Region's totals, taking into
+    account *turnover*.
   * Group A and B are children of Region R. Elsewhere in R, 500 Iron Ingots are being produced.
     A consumes 200 and B consumes 800. This is a net shortfall of 500, but B is more of a 
     problem here than A. This is therefore summarised as a shortfall of 100 for A and 400 for B.

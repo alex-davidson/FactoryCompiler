@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
+﻿using System.Collections.Immutable;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using FactoryCompiler.Model;
 using FactoryCompiler.Model.Evaluate;
 using FactoryCompiler.Model.State;
@@ -12,7 +8,7 @@ using NUnit.Framework;
 namespace FactoryCompiler.UnitTests.Evaluate
 {
     [TestFixture]
-    public class FactoryStateSummariserTests
+    public partial class FactoryStateSummariserTests
     {
         [Test]
         public void RegionImportExcessIsInternal()

@@ -51,6 +51,8 @@ public class Region
     public ImmutableArray<Transport> Inbound { get; init; }
     public ImmutableArray<Transport> Outbound { get; init; }
 
+    public override string ToString() => RegionName.Name;
+
     public static ImmutableArray<Region> MergeByName(IEnumerable<Region> regions)
     {
         return regions.GroupBy(x => x.RegionName)

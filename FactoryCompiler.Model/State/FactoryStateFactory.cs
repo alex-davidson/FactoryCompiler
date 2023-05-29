@@ -1,5 +1,4 @@
 ﻿using FactoryCompiler.Model.Diagnostics;
-using FactoryCompiler.Model.Mappers;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -42,10 +41,7 @@ namespace FactoryCompiler.Model.State
                 CollapseGroups = CollapseGroups,
             };
             var regions = description.Regions.Select(builder.BuildRegion).ToImmutableArray();
-            var transportLinks = description.Regions
-                .SelectMany(r => builder.BuildTransportLinks(TransportLinkDirection.ToRegion, r, r.Inbound)
-                    .Concat(builder.BuildTransportLinks(TransportLinkDirection.FromRegion, r, r.Outbound)))
-                .ToImmutableArray();
+            var transportLinks = description.Regions.SelectMany(builder.BuildTransportLinks).ToImmutableArray();
 
             return new FactoryState(regions, transportLinks, builder.Diagnostics.ToImmutableArray());
         }
@@ -134,7 +130,22 @@ namespace FactoryCompiler.Model.State
                 return true;
             }
 
-            public IEnumerable<TransportLink> BuildTransportLinks(TransportLinkDirection direction, Region region, IEnumerable<Transport> transports)
+            public IEnumerable<TransportLink> BuildTransportLinks(Region region)
+            {
+                var conflicts = region.Inbound.Select(x => x.ItemName).
+                    Intersect(region.Outbound.Select(x => x.ItemName))
+                    .ToArray();
+                foreach (var conflict in conflicts)
+                {
+                    Diagnostics.Add(Diagnostic.Error($"Region '{region.RegionName}' both imports and exports '{conflict}'."));
+                }
+
+                return BuildTransportLinks(TransportLinkDirection.ToRegion, region, region.Inbound)
+                    .Concat(BuildTransportLinks(TransportLinkDirection.FromRegion, region, region.Outbound))
+                    .Distinct();
+            }
+
+            private IEnumerable<TransportLink> BuildTransportLinks(TransportLinkDirection direction, Region region, IEnumerable<Transport> transports)
             {
                 foreach (var transport in transports)
                 {
@@ -143,7 +154,7 @@ namespace FactoryCompiler.Model.State
                         Diagnostics.Add(Diagnostic.Warning($"Unrecognised item name: {transport.ItemName}"));
                         continue;
                     }
-                    yield return new TransportLink(transport, direction, region, transport.Network, item);
+                    yield return new TransportLink(direction, region, transport.Network, item);
                 }
             }
         }

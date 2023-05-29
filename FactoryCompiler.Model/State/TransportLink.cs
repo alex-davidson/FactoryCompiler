@@ -7,6 +7,6 @@ public enum TransportLinkDirection
     ToRegion = 2,
 }
 
-public record TransportLink(Transport Definition, TransportLinkDirection Direction, Region Region, Identifier NetworkName, Item Item);
+public record TransportLink(TransportLinkDirection Direction, Region Region, Identifier NetworkName, Item Item);
 
 public record TransportLinkAggregate(TransportLinkDirection Direction, Region Region, Identifier NetworkName);
