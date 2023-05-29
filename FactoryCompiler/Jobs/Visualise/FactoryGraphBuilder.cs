@@ -38,6 +38,7 @@ internal class FactoryGraphBuilder
 
         var layout = CreateRegionLayout();
         regionSubgraph.LayoutSettings = layout;
+        layout.ClusterMargin = 30;
         (builder.Graph.LayoutAlgorithmSettings as SugiyamaLayoutSettings)?.ClusterSettings.Add(regionSubgraph, layout);
 
         foreach (var group in region.Groups)

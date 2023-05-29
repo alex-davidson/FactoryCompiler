@@ -81,7 +81,7 @@ public partial class MainWindow : Window
         {
             graphViewer.RegisterLabelCreator(subgraph, factoryNodeRenderer.Render);
         }
-
+        graphViewer.LayoutEditingEnabled = false;
         graphViewer.BindToPanel(graphViewerPanel);
 
         // This will update the UI.
