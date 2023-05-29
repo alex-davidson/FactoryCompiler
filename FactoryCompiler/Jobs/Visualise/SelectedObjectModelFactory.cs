@@ -80,6 +80,7 @@ public class SelectedObjectModelFactory
                 { "Group", groupState.GetPreferredName() },
                 { "In region", regionName },
                 { "Count", groupState.Definition.Repeat > 1 ? groupState.Definition.Repeat.ToString(CultureInfo.CurrentCulture) : "" },
+                { "Total count", groupState.ParentRepeats > 1 ? (groupState.ParentRepeats * groupState.Definition.Repeat).ToString(CultureInfo.CurrentCulture) : "", "Includes repeats of parent groups." },
             },
         };
     }
@@ -94,6 +95,7 @@ public class SelectedObjectModelFactory
             .LastOrDefault();
         var regionName = region?.RegionName.Name ?? "";
         var contribution = factory?.Summary?.GetGroup(groupState.Definition).GetScaledContribution() ?? ItemVolumesState.Empty;
+        var totalRepeats = groupState.ParentRepeats * groupState.Definition.Repeat;
         return new SelectedObjectModel
         {
             Object = obj,
@@ -106,8 +108,10 @@ public class SelectedObjectModelFactory
                 { "In region", regionName },
                 { "Recipe", groupState.Production!.Recipe.RecipeName.Name },
                 { "Count", FormatRational(groupState.Production!.Definition.Count) },
-                { "Effective speed", FormatRational(groupState.Production!.Definition.EffectiveCount, "0.####%"), "Relative to a single factory at 100% clock speed." },
+                { "Total count", totalRepeats > 1 ? (totalRepeats * (decimal)groupState.Production!.Definition.Count).ToString(CultureInfo.CurrentCulture) : "", "Includes repeats of parent groups." },
                 { "Clocks", string.Join(", ", groupState.Production!.Definition.Clocks.Select(x => $"{x.Count} @ {FormatRational(x.Percentage, "0.####%")}")) },
+                { "Effective speed", FormatRational(groupState.Production!.Definition.EffectiveCount, "0.####%"), "Relative to a single factory at 100% clock speed." },
+                { "Total speed", totalRepeats > 1 ? FormatRational(groupState.Production!.Definition.EffectiveCount * totalRepeats, "0.####%") : "", "Relative to a single factory at 100% clock speed, including repeats of parent groups." },
             },
         };
     }

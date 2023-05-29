@@ -62,17 +62,17 @@ namespace FactoryCompiler.Model.State
 
             public RegionState BuildRegion(Region region)
             {
-                var groups = region.Groups.Select(BuildGroup).ToImmutableArray();
+                var groups = region.Groups.Select(x => BuildGroup(x, 1)).ToImmutableArray();
                 return new RegionState(region, groups);
             }
 
-            private GroupState BuildGroup(Group group)
+            private GroupState BuildGroup(Group group, int parentRepeats)
             {
-                if (group.Groups.Length == 0) return BuildProductionGroup(group);
+                if (group.Groups.Length == 0) return BuildProductionGroup(group, parentRepeats);
 
-                var subgroups = group.Groups.Select(BuildGroup).ToImmutableArray();
+                var subgroups = group.Groups.Select(x => BuildGroup(x, parentRepeats * group.Repeat)).ToImmutableArray();
                 Debug.Assert(subgroups.Length > 0, "Non-production Group should have subgroups.");
-                if (subgroups.Length == 1 && CollapseGroups)
+                if (CollapseGroups && subgroups.Length == 1)
                 {
                     var subgroup = subgroups.Single();
                     if (group.GroupName == null) return subgroup;
@@ -80,18 +80,18 @@ namespace FactoryCompiler.Model.State
                     // Both have names. Combine them.
                     return subgroup.WithGroupName(group.GroupName.Value.Name + ", " + subgroup.GroupName.Value.Name);
                 }
-                return new GroupState(group, subgroups);
+                return new GroupState(group, subgroups, parentRepeats);
             }
 
-            private GroupState BuildProductionGroup(Group group)
+            private GroupState BuildProductionGroup(Group group, int parentRepeats)
             {
                 if (group.Production == null) throw new ArgumentException("Group is not a production group.");
 
                 if (!TryResolveRecipe(group.Production.RecipeName, group.Production.FactoryName, out var recipe))
                 {
-                    return new GroupState(group, ImmutableArray<GroupState>.Empty);
+                    return new GroupState(group, ImmutableArray<GroupState>.Empty, parentRepeats);
                 }
-                return new GroupState(group, new ProductionState(group.Production, recipe));
+                return new GroupState(group, new ProductionState(group.Production, recipe), parentRepeats);
             }
 
             private bool TryResolveRecipe(Identifier recipeName, Identifier? factoryName, [MaybeNullWhen(returnValue: false)] out Recipe recipe)

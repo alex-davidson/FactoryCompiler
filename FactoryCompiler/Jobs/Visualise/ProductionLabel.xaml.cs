@@ -34,6 +34,7 @@ public class ProductionLabelModel
     }
 
     public string Name => groupState?.GetPreferredName() ?? "";
+    public string Repeat => groupState?.Definition.Repeat > 1 ? $" x{groupState?.Definition.Repeat}" : "";
     public IItemVolumesState State => groupState?.ItemVolumes ?? ItemVolumesState.Empty;
 
     public SurplusAndShortfallModel Summary

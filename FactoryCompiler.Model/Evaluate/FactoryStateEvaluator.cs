@@ -30,21 +30,20 @@ public class FactoryStateEvaluator
     {
         foreach (var child in region.Groups)
         {
-            UpdateInPlace(child, 1);
+            UpdateInPlace(child);
         }
         region.ItemVolumes = ItemVolumesState.Sum(region.GetChildStates());
     }
 
-    private void UpdateInPlace(GroupState group, int scale)
+    private void UpdateInPlace(GroupState group)
     {
-        var repeatScale = scale * group.Definition.Repeat;
         if (group.Production != null)
         {
-            UpdateInPlace(group.Production, repeatScale);
+            UpdateInPlace(group.Production, group.ParentRepeats * group.Definition.Repeat);
         }
         foreach (var child in group.Groups)
         {
-            UpdateInPlace(child, repeatScale);
+            UpdateInPlace(child);
         }
         group.ItemVolumes = ItemVolumesState.Sum(group.GetChildStates());
     }
