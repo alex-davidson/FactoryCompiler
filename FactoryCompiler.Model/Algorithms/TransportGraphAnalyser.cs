@@ -71,10 +71,13 @@ namespace FactoryCompiler.Model.Algorithms
             public Identifier Via { get; }
         }
 
+        private readonly bool debugToConsole = false;
+
         /// <summary>
         /// Use Simplex method to determine resource distribution.
         /// </summary>
         /// <param name="links">Transport links involved.</param>
+        /// <param name="itemType">Item type for which we're currently solving. Caller is expected to filter/group the links appropriately.</param>
         /// <param name="tradeLimits">Supply/demand volumes for regions involved.</param>
         public IReadOnlyCollection<Distribution> SolveDistribution(IReadOnlyCollection<TransportLink> links, Item itemType, Dictionary<Region, IItemVolumesState> tradeLimits)
         {
@@ -88,8 +91,13 @@ namespace FactoryCompiler.Model.Algorithms
             // Note that Simplex requires that all solutions be positive.
             var constraints = new ConstraintList();
 
+            // For use when debugging test fixtures, etc. Shows Simplex tableau as well as inputs/outputs.
+            var debugWriter = debugToConsole ? new DebugWriter(Console.WriteLine) : null;
+
             // Link's index is its variable number.
             var linkVariables = links.Select((x, i) => new Variable(x, i)).ToArray();
+            // Simplex solver usually adds surplus variables internally for inequalities, but in this case
+            // we actually want them as outputs.
             var surplusVariables = linkVariables
                 .Where(x => x.Link.Direction == TransportLinkDirection.FromRegion)
                 .GroupBy(x => x.Link.Region)
@@ -112,7 +120,7 @@ namespace FactoryCompiler.Model.Algorithms
                 {
                     coefficients[surplusVariable.Index] = 1;
                 }
-                Console.WriteLine($"[{string.Join(", ", coefficients)}] <= {supply}");
+                debugWriter?.Write($"[{string.Join(", ", coefficients)}] <= {supply}");
                 constraints.Add(Constrain.Linear(coefficients).EqualTo((float)supply));
             }
             foreach (var sink in linkVariables.Where(x => x.Link.Direction == TransportLinkDirection.ToRegion).GroupBy(x => x.Link.Region))
@@ -125,7 +133,7 @@ namespace FactoryCompiler.Model.Algorithms
                     coefficients[variable.Index] = 1;
                     maximise[variable.Index] = 1;
                 }
-                Console.WriteLine($"[{string.Join(", ", coefficients)}] <= {demand.AbsoluteValue()}");
+                debugWriter?.Write($"[{string.Join(", ", coefficients)}] <= {demand.AbsoluteValue()}");
                 constraints.Add(Constrain.Linear(coefficients).LessThanOrEqualTo((float)demand.AbsoluteValue()));
             }
             foreach (var network in linkVariables.GroupBy(x => x.Link.NetworkName))
@@ -137,13 +145,12 @@ namespace FactoryCompiler.Model.Algorithms
                                                  : variable.Link.Direction == TransportLinkDirection.ToRegion ? -1
                                                  : 0;
                 }
-                Console.WriteLine($"[{string.Join(", ", coefficients)}] <= 0");
+                debugWriter?.Write($"[{string.Join(", ", coefficients)}] <= 0");
                 constraints.Add(Constrain.Linear(coefficients).LessThanOrEqualTo(0));
             }
 
-            var writer = new DebugWriter(Console.WriteLine);
-            Console.WriteLine($"[{string.Join(", ", maximise)}]  max");
-            var result = SimplexSolver.Given(constraints, writer).Maximise(maximise);
+            debugWriter?.Write($"[{string.Join(", ", maximise)}]  max");
+            var result = SimplexSolver.Given(constraints, debugWriter).Maximise(maximise);
             switch (result.Result)
             {
                 case SimplexResult.OptimalSolution:
@@ -157,7 +164,7 @@ namespace FactoryCompiler.Model.Algorithms
             foreach (var line in linkVariables)
             {
                 var r = ReadResult(line);
-                Console.WriteLine($"x{line.Index + 1}> {line.Link.NetworkName} {line.Link.Direction} {line.Link.Region.RegionName}: {r.ItemVolume.Volume}");
+                debugWriter?.Write($"x{line.Index + 1}> {line.Link.NetworkName} {line.Link.Direction} {line.Link.Region.RegionName}: {r.ItemVolume.Volume}");
             }
 
             var distributions = linkVariables.Select(ReadResult).ToArray();
