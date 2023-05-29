@@ -1,0 +1,27 @@
+{
+  "Regions": [
+    {
+      "RegionName": "Caterium Coast",
+      "Groups": [
+        {
+          "FactoryName": "Miner Mk2",
+          "Recipe": "Pure Caterium Ore",
+          "Count": "1",
+          "Clocks": [{ "Count": 1, "Clock": "200%" }]
+        },
+        {
+          "FactoryName": "Smelter",
+          "Recipe": "Caterium Ingot",
+          "Count": "18"
+        }
+      ],
+      "Inbound": [],
+      "Outbound": [
+        {
+          "Item": "Caterium Ingot",
+          "Network": "Caterium for Crucible"
+        }
+      ]
+    }
+  ]
+}

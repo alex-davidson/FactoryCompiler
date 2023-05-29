@@ -1,0 +1,332 @@
+{
+  "Regions": [
+    {
+      "RegionName": "Crucible",
+      "Groups": [
+        {
+          "GroupName": "Steel Production",
+          "Repeat": "2",
+          "Groups": [
+            {
+              "FactoryName": "Smelter",
+              "Recipe": "Iron Ingot",
+              "Count": "8"
+            },
+            {
+              "FactoryName": "Foundry",
+              "Recipe": "Solid Steel Ingot",
+              "Count": "6"
+            }
+          ]
+        },
+        {
+          "GroupName": "Copper Production",
+          "Repeat": "2",
+          "Groups": [
+            {
+              "FactoryName": "Foundry",
+              "Recipe": "Copper Alloy Ingot",
+              "Count": "12"
+            }
+          ]
+        },
+        {
+          "GroupName": "Concrete Production",
+          "Repeat": "2",
+          "Groups": [
+            {
+              "FactoryName": "Water Extractor",
+              "Recipe": "Water",
+              "Count": "3"
+            },
+            {
+              "FactoryName": "Refinery",
+              "Recipe": "Wet Concrete",
+              "Count": "5"
+            }
+          ]
+        },
+        {
+          "GroupName": "Steel Pipe Production",
+          "Repeat": "1",
+          "Groups": [
+            {
+              "FactoryName": "Constructor",
+              "Recipe": "Steel Pipe",
+              "Count": "24"
+            }
+          ]
+        },
+        {
+          "GroupName": "Encased Beam Production",
+          "Repeat": "1",
+          "Groups": [
+            {
+              "FactoryName": "Assembler",
+              "Recipe": "Encased Industrial Pipe",
+              "Count": "10"
+            }
+          ]
+        },
+        {
+          "GroupName": "Wire Production",
+          "Repeat": "1",
+          "Groups": [
+            {
+              "FactoryName": "Constructor",
+              "Recipe": "Wire",
+              "Count": "24"
+            }
+          ]
+        },
+        {
+          "GroupName": "Motor Production",
+          "Repeat": "1",
+          "Groups": [
+            {
+              "FactoryName": "Assembler",
+              "Recipe": "Steel Rotor",
+              "Count": "8"
+            },
+            {
+              "FactoryName": "Assembler",
+              "Recipe": "Stator",
+              "Count": "8"
+            },
+            {
+              "FactoryName": "Assembler",
+              "Recipe": "Motor",
+              "Count": "4"
+            }
+          ]
+        },
+        {
+          "GroupName": "Computer Production",
+          "Repeat": "1",
+          "Groups": [
+            {
+              "GroupName": "Circuit Board Production",
+              "Repeat": "2",
+              "Groups": [
+                {
+                  "FactoryName": "Assembler",
+                  "Recipe": "Fused Quickwire",
+                  "Count": "10"
+                },
+                {
+                  "FactoryName": "Assembler",
+                  "Recipe": "Caterium Circuit Board",
+                  "Count": "12"
+                }
+              ]
+            },
+            {
+              "FactoryName": "Manufacturer",
+              "Recipe": "Caterium Computer",
+              "Count": "8"
+            }
+          ]
+        },
+        {
+          "GroupName": "Crystal Oscillator Production",
+          "Repeat": "1",
+          "Groups": [
+            {
+              "FactoryName": "Constructor",
+              "Recipe": "Copper Sheet",
+              "Count": "16"
+            },
+            {
+              "FactoryName": "Constructor",
+              "Recipe": "Quickwire",
+              "Count": "10"
+            },
+            {
+              "FactoryName": "Assembler",
+              "Recipe": "AI Limiter",
+              "Count": "6"
+            },
+            {
+              "FactoryName": "Manufacturer",
+              "Recipe": "Insulated Crystal Oscillator",
+              "Count": "8"
+            }
+          ]
+        },
+        {
+          "GroupName": "Supercomputer Production",
+          "Repeat": "1",
+          "Groups": [
+            {
+              "FactoryName": "Manufacturer",
+              "Recipe": "Supercomputer",
+              "Count": "4"
+            }
+          ]
+        },
+        {
+          "GroupName": "High-Speed Connector Production",
+          "Repeat": "1",
+          "Groups": [
+            {
+              "FactoryName": "Assembler",
+              "Recipe": "Fused Quickwire",
+              "Count": "10"
+            },
+            {
+              "FactoryName": "Assembler",
+              "Recipe": "Caterium Circuit Board",
+              "Count": "3"
+            },
+            {
+              "FactoryName": "Manufacturer",
+              "Recipe": "Silicon High-Speed Connector",
+              "Count": "8"
+            }
+          ]
+        },
+        {
+          "GroupName": "Radio Control Unit Production",
+          "Repeat": "1",
+          "Groups": [
+            {
+              "FactoryName": "Constructor",
+              "Recipe": "Quickwire",
+              "Count": "6"
+            },
+            {
+              "FactoryName": "Constructor",
+              "Recipe": "Aluminum Casing",
+              "Count": "6"
+            },
+            {
+              "FactoryName": "Assembler",
+              "Recipe": "Caterium Circuit Board",
+              "Count": "7"
+            },
+            {
+              "FactoryName": "Manufacturer",
+              "Recipe": "Radio Control System",
+              "Count": "4"
+            }
+          ]
+        },
+        {
+          "GroupName": "Battery Production",
+          "Repeat": "1",
+          "Groups": [
+            {
+              "FactoryName": "Constructor",
+              "Recipe": "Wire",
+              "Count": "10"
+            },
+            {
+              "FactoryName": "Assembler",
+              "Recipe": "Alclad Aluminum Sheet",
+              "Count": "7"
+            },
+            {
+              "FactoryName": "Manufacturer",
+              "Recipe": "Classic Battery",
+              "Count": "4"
+            }
+          ]
+        },
+        {
+          "GroupName": "Heavy Modular Frame Production",
+          "Repeat": "1",
+          "Groups": [
+            {
+              "FactoryName": "Assembler",
+              "Recipe": "Steel Coated Plate",
+              "Count": "4"
+            },
+            {
+              "FactoryName": "Assembler",
+              "Recipe": "Stitched Iron Plate",
+              "Count": "8"
+            },
+            {
+              "FactoryName": "Assembler",
+              "Recipe": "Steeled Frame",
+              "Count": "20"
+            },
+            {
+              "FactoryName": "Manufacturer",
+              "Recipe": "Heavy Encased Frame",
+              "Count": "8"
+            }
+          ]
+        }
+      ],
+      "Inbound": [
+        {
+          "Item": "Iron Ore",
+          "Network": "Crucible Mines"
+        },
+        {
+          "Item": "Copper Ore",
+          "Network": "Crucible Mines"
+        },
+        {
+          "Item": "Limestone",
+          "Network": "Crucible Mines"
+        },
+        {
+          "Item": "Coal",
+          "Network": "Crucible Mines"
+        },
+        {
+          "Item": "Sulfur",
+          "Network": "Crucible Mines"
+        },
+        {
+          "Item": "Iron Ore",
+          "Network": "Crucible Internal"
+        },
+        {
+          "Item": "Copper Ore",
+          "Network": "Crucible Internal"
+        },
+        {
+          "Item": "Limestone",
+          "Network": "Crucible Internal"
+        },
+        {
+          "Item": "Coal",
+          "Network": "Crucible Internal"
+        },
+        {
+          "Item": "Caterium Ingot",
+          "Network": "Caterium for Crucible"
+        },
+        {
+          "Item": "Aluminum Ingot",
+          "Network": "Aluminium Supply"
+        },
+        {
+          "Item": "Rubber",
+          "Network": "Polymer Supply"
+        },
+        {
+          "Item": "Plastic",
+          "Network": "Polymer Supply"
+        },
+        {
+          "Item": "Quartz Crystal",
+          "Network": "Quartz Derivatives"
+        },
+        {
+          "Item": "Silica",
+          "Network": "Quartz Derivatives"
+        }
+      ],
+      "Outbound": [
+        {
+          "Item": "Battery",
+          "Network": "Battery Supply"
+        }
+      ]
+    }
+  ]
+}

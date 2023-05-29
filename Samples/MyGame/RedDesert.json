@@ -1,0 +1,185 @@
+{
+  "Regions": [
+    {
+      "RegionName": "Red Desert Southeast",
+      "Groups": [
+        {
+          "GroupName": "Coal",
+          "Groups": [
+            {
+              "Recipe": "Pure Coal",
+              "FactoryName": "Miner Mk2",
+              "Count": "1"
+            },
+            {
+              "Recipe": "Normal Coal",
+              "FactoryName": "Miner Mk2",
+              "Count": "4"
+            }
+          ]
+        },
+        {
+          "GroupName": "Sulfur",
+          "Recipe": "Pure Sulfur",
+          "FactoryName": "Miner Mk2",
+          "Count": "1"
+        },
+        {
+          "GroupName": "Copper Ore",
+          "Groups": [
+            {
+              "Recipe": "Pure Copper Ore",
+              "FactoryName": "Miner Mk2",
+              "Count": "1"
+            }
+          ]
+        },
+        {
+          "GroupName": "Iron Ore",
+          "Groups": [
+            {
+              "Recipe": "Pure Iron Ore",
+              "FactoryName": "Miner Mk2",
+              "Count": "1"
+            }
+          ]
+        }
+      ],
+      "Outbound": [
+        {
+          "Item": "Coal",
+          "Network": "Crucible Mines"
+        },
+        {
+          "Item": "Iron Ore",
+          "Network": "Crucible Mines"
+        },
+        {
+          "Item": "Copper Ore",
+          "Network": "Crucible Mines"
+        },
+        {
+          "Item": "Sulfur",
+          "Network": "Crucible Mines"
+        }
+      ]
+    },
+    {
+      "RegionName": "Red Desert Northwest",
+      "Groups": [
+        {
+          "GroupName": "Coal",
+          "Recipe": "Normal Coal",
+          "FactoryName": "Miner Mk2",
+          "Count": "2"
+        },
+        {
+          "GroupName": "Sulfur",
+          "Recipe": "Pure Sulfur",
+          "FactoryName": "Miner Mk2",
+          "Count": "1"
+        }
+      ],
+      "Outbound": [
+        {
+          "Item": "Coal",
+          "Network": "Crucible Internal"
+        }
+      ]
+    },
+    {
+      "RegionName": "Red Desert North",
+      "Groups": [
+        {
+          "GroupName": "Coal",
+          "Recipe": "Pure Coal",
+          "FactoryName": "Miner Mk2",
+          "Count": "2"
+        }
+      ],
+      "Outbound": [
+        {
+          "Item": "Coal",
+          "Network": "Central Coal"
+        }
+      ]
+    },
+    {
+      "RegionName": "Red Desert West",
+      "Groups": [
+        {
+          "GroupName": "Limestone",
+          "Groups": [
+            {
+              "Recipe": "Normal Limestone",
+              "FactoryName": "Miner Mk2",
+              "Count": "3",
+              "Visible": false
+            },
+            {
+              "Recipe": "Impure Limestone",
+              "FactoryName": "Miner Mk2",
+              "Count": "1",
+              "Visible": false
+            }
+          ]
+        }
+      ],
+      "Outbound": [
+        {
+          "Item": "Limestone",
+          "Network": "Crucible Internal"
+        }
+      ]
+    },
+    {
+      "RegionName": "Red Desert Central",
+      "Groups": [
+        {
+          "GroupName": "Copper Ore",
+          "Groups": [
+            {
+              "Recipe": "Normal Copper Ore",
+              "FactoryName": "Miner Mk2",
+              "Count": "1",
+              "Visible": false
+            },
+            {
+              "Recipe": "Impure Copper Ore",
+              "FactoryName": "Miner Mk2",
+              "Count": "1",
+              "Visible": false
+            }
+          ]
+        },
+        {
+          "GroupName": "Iron Ore",
+          "Groups": [
+            {
+              "Recipe": "Pure Iron Ore",
+              "FactoryName": "Miner Mk2",
+              "Count": "2",
+              "Visible": false
+            },
+            {
+              "Recipe": "Impure Iron Ore",
+              "FactoryName": "Miner Mk2",
+              "Count": "4",
+              "Visible": false
+            }
+          ]
+        }
+      ],
+      "Outbound": [
+        {
+          "Item": "Iron Ore",
+          "Network": "Crucible Internal"
+        },
+        {
+          "Item": "Copper Ore",
+          "Network": "Crucible Internal"
+        }
+      ]
+    }
+  ]
+}

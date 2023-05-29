@@ -1,0 +1,27 @@
+{
+  "Regions": [
+    {
+      "RegionName": "Central Coal Power",
+      "Groups": [
+        {
+          "GroupName": "Generators",
+          "Recipe": "Coal",
+          "FactoryName": "Coal Generator",
+          "Count": "32"
+        },
+        {
+          "Recipe": "Water",
+          "FactoryName": "Water Extractor",
+          "Count": "6",
+          "Clocks": [{ "Count": 6, "Clock": "200%" }]
+        }
+      ],
+      "Inbound": [
+        {
+          "Item": "Coal",
+          "Network": "Central Coal"
+        }
+      ]
+    }
+  ]
+}

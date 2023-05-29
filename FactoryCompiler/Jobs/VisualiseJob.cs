@@ -104,7 +104,7 @@ namespace FactoryCompiler.Jobs
             try
             {
                 var app = new Application();
-                Native.ShowWindow(Native.GetConsoleWindow(), 0 /*SW_HIDE*/);
+                // Native.ShowWindow(Native.GetConsoleWindow(), 0 /*SW_HIDE*/);
                 app.Run(new MainWindow(model));
                 tcs.TrySetResult();
             }

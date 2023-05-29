@@ -1,0 +1,55 @@
+{
+  "Regions": [
+    {
+      "RegionName": "Crystal Lake",
+      "Groups": [
+        {
+          "GroupName": "Quartz",
+          "Groups": [
+            {
+              "Recipe": "Pure Quartz Crystal",
+              "FactoryName": "Refinery",
+              "Count": "8"
+            },
+            {
+              "Recipe": "Water",
+              "FactoryName": "Water Extractor",
+              "Count": "5"
+            }
+          ]
+        },
+        {
+          "GroupName": "Silica",
+          "Groups": [
+            {
+              "Recipe": "Cheap Silica",
+              "FactoryName": "Assembler",
+              "Count": "12"
+            },
+            {
+              "Recipe": "Pure Limestone",
+              "FactoryName": "Miner Mk2",
+              "Count": "1"
+            }
+          ]
+        }
+      ],
+      "Inbound": [
+        {
+          "Item": "Raw Quartz",
+          "Network": "Raw Quartz Mines"
+        }
+      ],
+      "Outbound": [
+        {
+          "Item": "Quartz Crystal",
+          "Network": "Quartz Derivatives"
+        },
+        {
+          "Item": "Silica",
+          "Network": "Quartz Derivatives"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,138 @@
+{
+  "Regions": [
+    {
+      "RegionName": "Gold Coast",
+      "Groups": [
+        {
+          "GroupName": "Crude Oil",
+          "Groups": [
+            {
+              "Recipe": "Pure Crude Oil",
+              "FactoryName": "Oil Extractor",
+              "Count": "2"
+            },
+            {
+              "Recipe": "Normal Crude Oil",
+              "FactoryName": "Oil Extractor",
+              "Count": "2"
+            }
+          ]
+        },
+        {
+          "GroupName": "Polymers",
+          "Groups": [
+            {
+              "Recipe": "Plastic",
+              "FactoryName": "Refinery",
+              "Count": "4"
+            },
+            {
+              "Recipe": "Rubber",
+              "FactoryName": "Refinery",
+              "Count": "4"
+            }
+          ]
+        },
+        {
+          "GroupName": "Coal Power",
+          "Groups": [
+            {
+              "Recipe": "Petroleum Coke",
+              "FactoryName": "Refinery",
+              "Count": "3"
+            },
+            {
+              "Recipe": "Petroleum Coke",
+              "FactoryName": "Coal Generator",
+              "Count": "12"
+            }
+          ]
+        },
+        {
+          "GroupName": "Fuel Power",
+          "Groups": [
+            {
+              "GroupName": "Polymers",
+              "Groups": [
+                {
+                  "Recipe": "Water",
+                  "FactoryName": "Water Extractor",
+                  "Count": "7"
+                },
+                {
+                  "Recipe": "Residual Plastic",
+                  "FactoryName": "Refinery",
+                  "Count": "10"
+                },
+                {
+                  "Recipe": "Residual Rubber",
+                  "FactoryName": "Refinery",
+                  "Count": "15"
+                }
+              ]
+            },
+            {
+              "GroupName": "Fuel Production",
+              "Groups": [
+                {
+                  "GroupName": "Water Supply",
+                  "Recipe": "Water",
+                  "FactoryName": "Water Extractor",
+                  "Count": "10"
+                },
+                {
+                  "Repeat": "3",
+                  "Groups": [
+                    {
+                      "Recipe": "Heavy Oil Residue",
+                      "FactoryName": "Refinery",
+                      "Count": "5"
+                    },
+                    {
+                      "Recipe": "Diluted Fuel",
+                      "FactoryName": "Blender",
+                      "Count": "4"
+                    },
+                    {
+                      "GroupName": "Generators",
+                      "Recipe": "Fuel",
+                      "FactoryName": "Fuel Generator",
+                      "Count": "33"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "GroupName": "Fuel Overflow",
+              "Groups": [
+                {
+                  "Recipe": "Empty Canister",
+                  "FactoryName": "Constructor",
+                  "Count": "1"
+                },
+                {
+                  "Recipe": "Packaged Fuel",
+                  "FactoryName": "Packager",
+                  "Count": "1",
+                  "Clocks": [{ "Count": 1, "Clock": "30%" }]
+                }
+              ]
+            },
+          ]
+        },
+      ],
+      "Inbound": [],
+      "Outbound": [
+        {
+          "Item": "Plastic",
+          "Network": "Polymer Supply"
+        },
+        {
+          "Item": "Rubber",
+          "Network": "Polymer Supply"
+        }
+      ]
+    }
+  ]
+}

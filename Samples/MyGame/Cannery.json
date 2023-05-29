@@ -1,0 +1,108 @@
+{
+  "Regions": [
+    {
+      "RegionName": "Cannery",
+      "Groups": [
+        {
+          "GroupName": "Local Bauxite Mines",
+          "Groups": [
+            {
+              "FactoryName": "Miner Mk2",
+              "Recipe": "Pure Bauxite",
+              "Count": "1"
+            },
+            {
+              "FactoryName": "Miner Mk2",
+              "Recipe": "Normal Bauxite",
+              "Count": "1"
+            },
+            {
+              "FactoryName": "Miner Mk2",
+              "Recipe": "Impure Bauxite",
+              "Count": "2"
+            }
+          ]
+        },
+        {
+          "GroupName": "Oil & Overflow",
+          "Groups": [
+            {
+              "Recipe": "Pure Crude Oil",
+              "FactoryName": "Oil Extractor",
+              "Count": "1"
+            },
+            {
+              "Recipe": "Polyester Fabric",
+              "FactoryName": "Refinery",
+              "Count": "1"
+            },
+            {
+              "Recipe": "Water",
+              "FactoryName": "Water Extractor",
+              "Count": "1"
+            }
+          ]
+        },
+        {
+          "GroupName": "Petrocoke Production",
+          "Repeat": "2",
+          "Groups": [
+            {
+              "Recipe": "Heavy Oil Residue",
+              "FactoryName": "Refinery",
+              "Count": "1"
+            },
+            {
+              "Recipe": "Petroleum Coke",
+              "FactoryName": "Refinery",
+              "Count": "1"
+            }
+          ]
+        },
+        {
+          "GroupName": "Aluminium Refinement",
+          "Repeat": "1",
+          "Groups": [
+            {
+              "GroupName": "Water",
+              "Groups": [
+                {
+                  "Recipe": "Water",
+                  "FactoryName": "Water Extractor",
+                  "Count": "2"
+                },
+                {
+                  "Recipe": "Sloppy Alumina",
+                  "FactoryName": "Refinery",
+                  "Count": "3"
+                },
+                {
+                  "Recipe": "Electrode Aluminum Scrap",
+                  "FactoryName": "Refinery",
+                  "Count": "4"
+                },
+                {
+                  "Recipe": "Pure Aluminum Ingot",
+                  "FactoryName": "Smelter",
+                  "Count": "20"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "Inbound": [
+        {
+          "Item": "Bauxite",
+          "Network": "Bauxite Mines"
+        }
+      ],
+      "Outbound": [
+        {
+          "Item": "Aluminum Ingot",
+          "Network": "Aluminium Supply"
+        }
+      ]
+    }
+  ]
+}
