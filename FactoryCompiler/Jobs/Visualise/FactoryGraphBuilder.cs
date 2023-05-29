@@ -42,6 +42,7 @@ internal class FactoryGraphBuilder
 
         foreach (var group in region.Groups)
         {
+            if (!group.Definition.Visible) continue;
             BuildGroup(builder, regionSubgraph, group);
         }
     }
@@ -64,6 +65,7 @@ internal class FactoryGraphBuilder
 
         foreach (var childGroup in group.Groups)
         {
+            if (!group.Definition.Visible) continue;
             BuildGroup(builder, groupSubgraph, childGroup);
         }
         return groupSubgraph;

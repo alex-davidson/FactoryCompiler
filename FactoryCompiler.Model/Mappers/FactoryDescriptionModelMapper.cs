@@ -63,7 +63,7 @@ internal struct FactoryDescriptionModelMapper
 
         public Group MapFromDto(Dto.FactoryDescription.Group dto) =>
             dto.Groups == null
-                ? new Group(MapMaybeNullIdentifier(dto.GroupName), default(ProductionMapper).MapFromDto(dto), default(NumberMapper).MapIntegerFromDto(dto.Repeat, 1))
+                ? new Group(MapMaybeNullIdentifier(dto.GroupName), default(ProductionMapper).MapFromDto(dto), default(NumberMapper).MapIntegerFromDto(dto.Repeat, 1), dto.Visible ?? true)
                 : new Group(MapMaybeNullIdentifier(dto.GroupName), MapListFrom(dto.Groups?.Select(MapFromDto)), default(NumberMapper).MapIntegerFromDto(dto.Repeat, 1));
     }
 

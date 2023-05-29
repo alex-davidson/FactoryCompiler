@@ -85,12 +85,13 @@ public class Region
 
 public class Group
 {
-    public Group(Identifier? groupName, Production? production, int repeat = 1)
+    public Group(Identifier? groupName, Production? production, int repeat = 1, bool visible = true)
     {
         GroupName = groupName;
         Production = production;
         Repeat = repeat;
         Groups = ImmutableArray<Group>.Empty;
+        Visible = visible;
     }
 
     public Group(Identifier? groupName, ImmutableArray<Group> groups, int repeat = 1)
@@ -98,12 +99,14 @@ public class Group
         GroupName = groupName;
         Groups = groups;
         Repeat = repeat;
+        Visible = true;
     }
 
     public Identifier? GroupName { get; }
     public Production? Production { get; }
     public ImmutableArray<Group> Groups { get; }
     public int Repeat { get; }
+    public bool Visible { get; }
 
     public readonly struct EquivalenceComparer : IEqualityComparer<Group>
     {

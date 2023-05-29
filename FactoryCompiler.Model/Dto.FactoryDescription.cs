@@ -56,6 +56,11 @@ namespace FactoryCompiler.Model
                 /// </summary>
                 [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
                 public ProductionClock[]? Clocks { get; set; }
+                /// <summary>
+                /// Whether or not to show this production group as a separate group. Default: true.
+                /// </summary>
+                [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+                public bool? Visible { get; set; }
             }
 
             /// <summary>
