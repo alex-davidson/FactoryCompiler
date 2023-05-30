@@ -4,6 +4,7 @@
       "RegionName": "Caterium Coast",
       "Groups": [
         {
+          "GroupName": "Caterium Ore",
           "FactoryName": "Miner Mk2",
           "Recipe": "Pure Caterium Ore",
           "Count": "1",

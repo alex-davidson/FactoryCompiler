@@ -1,6 +1,6 @@
 param([string]$name)
 
-$factoryPath = Join-Path $PSScriptRoot $name;
+$factoryPath = [IO.Path]::Combine($PSScriptRoot, $name);
 $debugBinary = Get-Item $(Join-Path $PSScriptRoot "..\FactoryCompiler\bin\Debug\net6.0-windows7.0\FactoryCompiler.exe");
 $releaseBinary = Get-Item $(Join-Path $PSScriptRoot "..\FactoryCompiler\bin\Debug\net6.0-windows7.0\FactoryCompiler.exe");
 

@@ -9,12 +9,14 @@
             {
               "Recipe": "Pure Crude Oil",
               "FactoryName": "Oil Extractor",
-              "Count": "2"
+              "Count": "2",
+              "Visible": false
             },
             {
               "Recipe": "Normal Crude Oil",
               "FactoryName": "Oil Extractor",
-              "Count": "2"
+              "Count": "2",
+              "Visible": false
             }
           ]
         },
@@ -42,9 +44,15 @@
               "Count": "3"
             },
             {
+              "GroupName": "Generators",
               "Recipe": "Petroleum Coke",
               "FactoryName": "Coal Generator",
               "Count": "12"
+            },
+            {
+              "Recipe": "Water",
+              "FactoryName": "Water Extractor",
+              "Count": "5"
             }
           ]
         },

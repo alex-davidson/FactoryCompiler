@@ -9,12 +9,14 @@
             {
               "Recipe": "Pure Coal",
               "FactoryName": "Miner Mk2",
-              "Count": "1"
+              "Count": "1",
+              "Visible": false
             },
             {
               "Recipe": "Normal Coal",
               "FactoryName": "Miner Mk2",
-              "Count": "4"
+              "Count": "4",
+              "Visible": false
             }
           ]
         },
@@ -30,7 +32,8 @@
             {
               "Recipe": "Pure Copper Ore",
               "FactoryName": "Miner Mk2",
-              "Count": "1"
+              "Count": "1",
+              "Visible": false
             }
           ]
         },
@@ -40,7 +43,8 @@
             {
               "Recipe": "Pure Iron Ore",
               "FactoryName": "Miner Mk2",
-              "Count": "1"
+              "Count": "1",
+              "Visible": false
             }
           ]
         }

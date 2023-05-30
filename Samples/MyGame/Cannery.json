@@ -9,17 +9,20 @@
             {
               "FactoryName": "Miner Mk2",
               "Recipe": "Pure Bauxite",
-              "Count": "1"
+              "Count": "1",
+              "Visible": false
             },
             {
               "FactoryName": "Miner Mk2",
               "Recipe": "Normal Bauxite",
-              "Count": "1"
+              "Count": "1",
+              "Visible": false
             },
             {
               "FactoryName": "Miner Mk2",
               "Recipe": "Impure Bauxite",
-              "Count": "2"
+              "Count": "2",
+              "Visible": false
             }
           ]
         },
@@ -27,6 +30,7 @@
           "GroupName": "Oil & Overflow",
           "Groups": [
             {
+              "GroupName": "Crude Oil",
               "Recipe": "Pure Crude Oil",
               "FactoryName": "Oil Extractor",
               "Count": "1"
@@ -64,29 +68,24 @@
           "Repeat": "1",
           "Groups": [
             {
-              "GroupName": "Water",
-              "Groups": [
-                {
-                  "Recipe": "Water",
-                  "FactoryName": "Water Extractor",
-                  "Count": "2"
-                },
-                {
-                  "Recipe": "Sloppy Alumina",
-                  "FactoryName": "Refinery",
-                  "Count": "3"
-                },
-                {
-                  "Recipe": "Electrode Aluminum Scrap",
-                  "FactoryName": "Refinery",
-                  "Count": "4"
-                },
-                {
-                  "Recipe": "Pure Aluminum Ingot",
-                  "FactoryName": "Smelter",
-                  "Count": "20"
-                }
-              ]
+              "Recipe": "Water",
+              "FactoryName": "Water Extractor",
+              "Count": "2"
+            },
+            {
+              "Recipe": "Sloppy Alumina",
+              "FactoryName": "Refinery",
+              "Count": "3"
+            },
+            {
+              "Recipe": "Electrode Aluminum Scrap",
+              "FactoryName": "Refinery",
+              "Count": "4"
+            },
+            {
+              "Recipe": "Pure Aluminum Ingot",
+              "FactoryName": "Smelter",
+              "Count": "20"
             }
           ]
         }

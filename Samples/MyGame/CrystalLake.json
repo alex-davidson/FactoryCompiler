@@ -27,6 +27,7 @@
               "Count": "12"
             },
             {
+              "GroupName": "Limestone",
               "Recipe": "Pure Limestone",
               "FactoryName": "Miner Mk2",
               "Count": "1"
