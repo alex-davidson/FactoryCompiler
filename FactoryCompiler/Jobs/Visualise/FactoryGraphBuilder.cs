@@ -43,7 +43,6 @@ internal class FactoryGraphBuilder
 
         foreach (var group in region.Groups)
         {
-            if (!group.Definition.Visible) continue;
             BuildGroup(builder, regionSubgraph, group);
         }
     }
@@ -53,6 +52,14 @@ internal class FactoryGraphBuilder
         if (group.Production != null)
         {
             return BuildProduction(builder, parent, group);
+        }
+
+        if (!group.Groups.Any(x => x.Definition.Visible))
+        {
+            var groupNode = builder.CreateNode<GroupState>(group, group.GroupName?.Name);
+            builder.Graph.AddNode(groupNode);
+            parent.AddNode(groupNode);
+            return groupNode;
         }
 
         var groupSubgraph = builder.CreateSubgraph<GroupState>(group, group.GroupName?.Name);
@@ -66,7 +73,7 @@ internal class FactoryGraphBuilder
 
         foreach (var childGroup in group.Groups)
         {
-            if (!group.Definition.Visible) continue;
+            if (!childGroup.Definition.Visible) continue;
             BuildGroup(builder, groupSubgraph, childGroup);
         }
         return groupSubgraph;
