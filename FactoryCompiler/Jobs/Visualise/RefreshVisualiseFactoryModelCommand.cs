@@ -37,7 +37,7 @@ public class RefreshVisualiseFactoryModelCommand : ICommand
     public void Execute(object? parameter)
     {
         if (!CanExecute(parameter)) return;
-        Task.Run(() => RefreshModel(CancellationToken.None));
+        _ = RefreshModel(CancellationToken.None);
     }
 
     public event EventHandler? CanExecuteChanged;
