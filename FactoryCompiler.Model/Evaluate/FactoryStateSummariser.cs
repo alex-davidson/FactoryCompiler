@@ -61,13 +61,13 @@ public class FactoryStateSummariser
         return false;
     }
 
-    private void SummariseGroups(FactoryStateSummary summary, IReadOnlyCollection<GroupState> groups, ItemVolumesState regionItemVolumes, Dictionary<Item, TransportLinkDirection> transported)
+    private void SummariseGroups(FactoryStateSummary summary, IReadOnlyCollection<GroupState> groups, ItemVolumesState parentItemVolumes, Dictionary<Item, TransportLinkDirection> transported)
     {
         foreach (var group in groups)
         {
             var contributions = ItemVolumesState.Sum(group.ItemVolumes.GetNetVolumes().Where(x => !IsExternalised(transported, x)));
-            summary.Groups.Add(group.Definition, new GroupSummary(regionItemVolumes, contributions));
-            SummariseGroups(summary, group.Groups, regionItemVolumes, transported);
+            summary.Groups.Add(group.Definition, new GroupSummary(parentItemVolumes, contributions));
+            SummariseGroups(summary, group.Groups, contributions, transported);
         }
     }
 }
