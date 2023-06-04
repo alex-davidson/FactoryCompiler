@@ -9,7 +9,7 @@ public partial class MainWindow : Window
     private GraphViewer? graphViewer;
     private readonly VisualiseFactoryModel model;
 
-    public MainWindow() : this(new VisualiseFactoryModel())
+    public MainWindow() : this(new VisualiseFactoryModel(VisualiseFactoryModelInputs.None))
     {
     }
 

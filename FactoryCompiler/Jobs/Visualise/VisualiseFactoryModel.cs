@@ -9,6 +9,13 @@ namespace FactoryCompiler.Jobs.Visualise;
 
 public class VisualiseFactoryModel : INotifyPropertyChanged, INotifyPropertyChanging
 {
+    public VisualiseFactoryModel(VisualiseFactoryModelInputs inputs)
+    {
+        RefreshCommand = new RefreshVisualiseFactoryModelCommand(inputs, this);
+    }
+
+    public RefreshVisualiseFactoryModelCommand RefreshCommand { get; }
+
     private SourceDataModel? sourceData;
     /// <summary>
     /// Set this when game data and all factory parts have been loaded.
@@ -91,6 +98,7 @@ public class VisualiseFactoryModel : INotifyPropertyChanged, INotifyPropertyChan
     }
 
     private IssuesModel issues = new IssuesModel(Array.Empty<Diagnostic>());
+
     /// <summary>
     /// Diagnostic messages.
     /// </summary>
@@ -102,6 +110,19 @@ public class VisualiseFactoryModel : INotifyPropertyChanged, INotifyPropertyChan
             if (issues == value) return;
             OnPropertyChanging();
             issues = value;
+            OnPropertyChanged();
+        }
+    }
+
+    private bool isRefreshing;
+    public bool IsRefreshing
+    {
+        get => isRefreshing;
+        set
+        {
+            if (isRefreshing == value) return;
+            OnPropertyChanging();
+            isRefreshing = value;
             OnPropertyChanged();
         }
     }

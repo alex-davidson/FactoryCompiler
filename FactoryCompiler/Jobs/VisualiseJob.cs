@@ -27,76 +27,24 @@ namespace FactoryCompiler.Jobs
 
         public async Task<int> Run(CancellationToken token)
         {
-            var model = new VisualiseFactoryModel();
+            var inputs = new VisualiseFactoryModelInputs
+            {
+                DatabaseFilePath = DatabaseFilePath,
+                FactoryDescriptionFilePaths = FactoryDescriptionFilePaths.ToImmutableArray(),
+                IgnoreErrors = IgnoreErrors,
+            };
+            var model = new VisualiseFactoryModel(inputs);
 
             var tcs = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
             var thread = new Thread(() => RunWpf(model, tcs));
             thread.SetApartmentState(ApartmentState.STA);
             thread.Start();
 
-            await RunModel(model, token);
+            await model.RefreshCommand.RefreshModel(token);
 
             await tcs.Task;
             thread.Join();
             return 0;
-        }
-
-        private async Task RunModel(VisualiseFactoryModel model, CancellationToken token)
-        {
-            model.SourceData = await LoadSourceData(token);
-
-            // Bail out if failure is fatal.
-            if (model.SourceData.IsFailed) return;
-
-            model.Factory = await CalculateFactoryState(model.SourceData);
-
-            if (model.Factory.IsFailed) return;
-
-            model.Graph = await BuildFactoryGraph(model.Factory);
-        }
-
-        private async Task<SourceDataModel> LoadSourceData(CancellationToken token)
-        {
-            ISource<LoadResult<IGameData>> gameDataSource = DatabaseFilePath == null
-                ? new DefaultGameDataSource()
-                : new GameDataSource(Path.GetFullPath(DatabaseFilePath));
-            var gameData = await gameDataSource.Load();
-            var factoryParts = new List<LoadResult<FactoryDescription?>>();
-            foreach (var sourcePath in FactoryDescriptionFilePaths)
-            {
-                token.ThrowIfCancellationRequested();
-                var source = new FactoryDescriptionDataSource(Path.GetFullPath(sourcePath));
-                factoryParts.Add(await source.Load());
-            }
-            var factoryDescription = FactoryDescription.Merge(factoryParts.Where(x => x.Asset != null).Select(x => x.Asset!));
-            return new SourceDataModel
-            {
-                IgnoreErrors = IgnoreErrors,
-                GameData = gameData,
-                FactoryParts = factoryParts.ToImmutableList(),
-                FactoryDescription = factoryDescription,
-            };
-        }
-
-        private async Task<Graph?> BuildFactoryGraph(FactoryModel modelFactory)
-        {
-            return new FactoryGraphBuilder().Build(modelFactory.State);
-        }
-
-        private async Task<FactoryModel> CalculateFactoryState(SourceDataModel sourceData)
-        {
-            var stateFactory = new FactoryStateFactory(sourceData.GameData!.Asset);
-            var state = stateFactory.Create(sourceData.FactoryDescription);
-            // Bail out if failure is fatal.
-            if (!IgnoreErrors && state.HasErrors)
-            {
-                return new FactoryModel(state, null, IgnoreErrors);
-            }
-            new FactoryStateEvaluator().UpdateInPlace(state);
-
-            // Summarise:
-            var summary = new FactoryStateSummariser().Summarise(state);
-            return new FactoryModel(state, summary, IgnoreErrors);
         }
 
         private void RunWpf(VisualiseFactoryModel model, TaskCompletionSource tcs)
